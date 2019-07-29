@@ -123,5 +123,6 @@ for dirpath, dirnames, filenames in os.walk(actor_dir):
                                         name = assign_name(db, name)
                                         if id in db.values():
                                             assign_id(db, name)
-
+                                        else:
+                                            db[name] = id
 update_db(db)

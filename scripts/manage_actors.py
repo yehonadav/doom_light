@@ -25,8 +25,18 @@ def get_db():
     return data
 
 
-def update_db(data):
-    data = ''.join([f'{name} {id}' for name, id in data.items()])
+def name_in_db(data: dict, name):
+    if name in data:
+        return True
+
+
+def id_in_db(data: dict, id):
+    if id in data.values():
+        return True
+
+
+def update_db(data: dict):
+    data = '\n'.join([f'{name} {id}' for name, id in data.items()])
 
     with open(database, 'w') as f:
         f.write(data)

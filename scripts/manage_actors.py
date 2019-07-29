@@ -125,4 +125,5 @@ for dirpath, dirnames, filenames in os.walk(actor_dir):
                                             assign_id(db, name)
                                         else:
                                             db[name] = id
+# TODO: update the source files!
 update_db(db)

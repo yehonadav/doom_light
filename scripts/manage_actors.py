@@ -50,6 +50,7 @@ def is_id(id):
         return False
 
 
+db = get_db()
 for dirpath, dirnames, filenames in os.walk(actor_dir):
     for file_name in filenames:
         if file_name.endswith(".wad"):
@@ -69,12 +70,25 @@ for dirpath, dirnames, filenames in os.walk(actor_dir):
 
                             # only name
                             elif len(elements) == 2:
+                                name = elements[1]
                                 # validate actor has name and not id
-                                if is_id(elements[1]):
+                                if is_id(name):
                                     continue
 
                                 # assign a new id
-                                pass
+                                name_dup = 0
+                                while name_in_db(db, name):
+                                    name = f'{name}{name_dup}'
+                                    name_dup += 1
+
+                                ids = sorted(db.values(), key=lambda id: int(id))
+
+                                if len(ids) < id_range[1]:
+                                    id = str(int(ids[-1])+1)
+
+                                    db[name] = id
+                                    update_db(db)
+
 
                             # name and id are present
                             else:

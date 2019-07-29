@@ -10,14 +10,17 @@ pattern_length = len(line_pattern)
 id_range = (0, 50000)
 
 database = 'actors.db'
-if not os.path.exists(database):
-    open(database, 'w').close()
 
 
 def get_db():
     data = {}
+    if not os.path.exists(database):
+        open(database, 'w').close()
+
     with open(database) as f:
         lines = f.readlines()
+
+    assert len(lines) < id_range[1]
 
     for line in lines:
         name, id = line.split(' ')
@@ -81,14 +84,15 @@ for dirpath, dirnames, filenames in os.walk(actor_dir):
                                     name = f'{name}{name_dup}'
                                     name_dup += 1
 
-                                ids = sorted(db.values(), key=lambda id: int(id))
-
-                                if len(ids) < id_range[1]:
-                                    id = str(int(ids[-1])+1)
-
-                                    db[name] = id
-                                    update_db(db)
-
+                                id = None
+                                ids = db.values()
+                                for id in range(id_range[1]):
+                                    if str(id) not in ids:
+                                        break
+                                if id:
+                                    db[name] = str(id)
+                                else:
+                                    print('no more available ids =(')
 
                             # name and id are present
                             else:
@@ -102,3 +106,5 @@ for dirpath, dirnames, filenames in os.walk(actor_dir):
                                     continue
 
                                 # check for name and id in database
+
+update_db(db)

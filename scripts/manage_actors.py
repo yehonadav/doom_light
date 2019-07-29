@@ -8,6 +8,7 @@ actor_dir = os.path.dirname(__file__).replace('scripts', 'monsters')
 line_pattern = b'ACTOR '
 pattern_length = len(line_pattern)
 id_range = (0, 50000)
+no_id_counter = {'counter': 0}
 
 database = 'actors.db'
 
@@ -53,6 +54,29 @@ def is_id(id):
         return False
 
 
+def assign_name(db, name):
+    name_dup = 0
+    while name_in_db(db, name):
+        name = f'{name}{name_dup}'
+        name_dup += 1
+    return name
+
+
+def assign_id(db, name):
+    id = None
+    ids = db.values()
+    for a in range(id_range[1]):
+        if str(a) not in ids:
+            id = str(a)
+            break
+    if id:
+        db[name] = id
+
+    elif no_id_counter['counter'] == 0:
+        no_id_counter['counter'] += 1
+        print('no more available ids =(')
+
+
 db = get_db()
 for dirpath, dirnames, filenames in os.walk(actor_dir):
     for file_name in filenames:
@@ -74,25 +98,13 @@ for dirpath, dirnames, filenames in os.walk(actor_dir):
                             # only name
                             elif len(elements) == 2:
                                 name = elements[1]
+
                                 # validate actor has name and not id
                                 if is_id(name):
                                     continue
 
-                                # assign a new id
-                                name_dup = 0
-                                while name_in_db(db, name):
-                                    name = f'{name}{name_dup}'
-                                    name_dup += 1
-
-                                id = None
-                                ids = db.values()
-                                for id in range(id_range[1]):
-                                    if str(id) not in ids:
-                                        break
-                                if id:
-                                    db[name] = str(id)
-                                else:
-                                    print('no more available ids =(')
+                                name = assign_name(db, name)
+                                assign_id(db, name)
 
                             # name and id are present
                             else:
@@ -106,5 +118,10 @@ for dirpath, dirnames, filenames in os.walk(actor_dir):
                                     continue
 
                                 # check for name and id in database
+                                if name_in_db(db, name):
+                                    if id != db[name]:
+                                        name = assign_name(db, name)
+                                        if id in db.values():
+                                            assign_id(db, name)
 
 update_db(db)

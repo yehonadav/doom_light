@@ -1,0 +1,60 @@
+
+ACTOR Arachnobaron 31213
+{
+	//$Category JonaDoom_Monsters
+        Health 1200
+	Radius 64
+	Height 70
+	Speed 12
+	PainChance 0
+	Mass 1000
+        SeeSound "baron/sight"
+    	PainSound "baron/pain"
+    	DeathSound "arachnobaron/death"
+    	ActiveSound "baby/active"
+        bloodcolor green
+	MONSTER
+	+FLOORCLIP
+        +BOSS
+        +MISSILEMORE
+        +MISSILEEVENMORE
+	+DONTMORPH
+	Obituary "%o was kill by an Arachnobaron."
+
+	States
+	{
+	Spawn:
+		ARBR AB 10 A_Look
+		Loop
+	See:
+		ARBR A 3 A_BabyMetal
+		ARBR ABBCC 3 A_Chase
+		ARBR D 3 A_BabyMetal
+		ARBR DEEFF 3 A_Chase
+		Goto See
+        Missile:
+		ARBR A 1 BRIGHT A_Jump (127,"Missile2")
+                ARBR A 20 BRIGHT A_FaceTarget
+		ARBR G 2 BRIGHT A_Custommissile ("Arachnotronplasma", 15, 0, 0)
+		ARBR H 2 BRIGHT
+		ARBR H 1 BRIGHT A_SpidRefire
+		Goto Missile+2
+        Missile2:
+		ARBR P 2 BRIGHT A_FaceTarget
+                ARBR P 5 BRIGHT A_Custommissile ("BaronBall", 30, 0, 5)
+		ARBR Q 5 BRIGHT A_Custommissile ("BaronBall", 30, 0, 0)
+                ARBR R 5 BRIGHT A_Custommissile ("BaronBall", 30, 0, -5)
+		Goto See+1
+	Death:
+		ARBR J 20 A_Scream
+		ARBR K 7 A_NoBlocking
+		ARBR LMNO 7
+		ARBR O -1 A_BossDeath
+		Stop
+    Raise:
+		ARBR O 5
+		ARBR ONMLKJ 5
+		Goto See+1
+	}
+}
+

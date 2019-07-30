@@ -1,0 +1,718 @@
+//---------------------------------------
+//- Rapid Fire Trooper Level-2-----------
+//---------------------------------------
+
+ACTOR RapidFireTrooper 3200
+{
+   //$Category JonaDoom_Monsters
+   //$Title "Z-2-RapidSmart"
+   Health 47
+   Radius 20
+   Height 45
+   Speed 9
+   PainChance 200
+   MONSTER 
+   +FLOORCLIP
+   DropItem Clip
+   SeeSound "grunt/sight"
+   AttackSound "grunt/attack"
+   PainSound "grunt/pain"
+   DeathSound "grunt/death"
+   ActiveSound "grunt/active"
+   Obituary "Seriously?? you wimp." 
+   Decal BulletChip
+   States 
+   { 
+   Spawn: 
+	  RFTR A 0 A_SpawnItemEx("RFTRHeadBox8", 0, 0, 47, 0, 0, 0, 0, 16)
+	  RFTR AB 10 A_Look
+      Loop 
+	TakeArmorShard:
+		RFTR Y 1 A_SpawnItemEx("MonsterHasPickedYou", 0, 0, 0, 0, 0, 0, 0, 16)
+		RFTR Y 0 A_SpawnItemEx("MonsterHealer20", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER)
+		RFTR Y 5
+		Goto SeeChase
+	TakeArmorHelmet:
+		RFTR Y 1 A_SpawnItemEx("MonsterHasPickedYou", 0, 0, 0, 0, 0, 0, 0, 16)
+		RFTR Y 0 A_JumpIfHealthLower(25,"Healling50")
+		Goto HeallingTo70
+	HeallingTo70:
+			RFTR Y 0 A_SetHealth(70, AAPTR_DEFAULT)
+			RFTR Y 5
+			Goto SeeChase
+	Healling50:
+			RFTR Y 0 A_SpawnItemEx("MonsterHealer50", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER)
+			RFTR Y 5
+			Goto SeeChase
+	TakeSalvagedArmorBonus:
+		RFTR Y 1 A_SpawnItemEx("MonsterHasPickedYou", 0, 0, 0, 0, 0, 0, 0, 16)
+		RFTR Y 0 A_SpawnItemEx("MonsterHealer5", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER)
+		RFTR Y 2
+		Goto SeeChase
+   OhNo:
+      RFTR A 0 A_SpawnItemEx("RFTRHeadBox4", 8, 0, 47, 0, 0, 0, 0, 16)
+	  RFTR A 4
+	  RFTR A 0 A_SpawnItemEx("RFTRHeadBox8", 8, 0, 47, 0, 0, 0, 0, 16)
+	  RFTH F 8 A_Scream
+	  RFTR A 0 A_SpawnItemEx("RFTRHeadBox8", 8, 0, 47, 0, 0, 0, 0, 16)
+	  RFTH F 8
+	  RFTH F 0 A_Jump(80,"Runaway1")
+	  RFTR A 0 A_SpawnItemEx("RFTRHeadBox8", 8, 0, 47, 0, 0, 0, 0, 16)
+	  RFTH F 8
+	  RFTH F 0 A_Jump(80,"AimingMoment")
+	See:
+		RFTR A 0 A_CheckProximity("SpecialActions", "SpecialAction",100,1)
+		RFTR A 0 A_JumpIfCloser (80, "SeeClose") 
+		RFTR A 0 A_SpawnItemEx("RFTRHeadBox8", 8, 0, 47, 0, 0, 0, 0, 16)
+		RFTR A 0 A_CheckProximity("OhNo", "MonsterShocker",250,1,CPXF_CHECKSIGHT)
+		RFTR A 0 A_CheckProximity("TakeArmorShard", "ArmorShard",50,1)
+		RFTR A 0 A_CheckProximity("TakeArmorHelmet", "ArmorHelmet",50,1)
+		RFTR A 0 A_CheckProximity("TakeSalvagedArmorBonus", "SalvagedArmorBonus",50,1)
+	SeeChase:
+	   RFTR AA 4 A_Chase 
+		RFTR B 0 A_JumpIfCloser (80, "SeeClose") 
+		RFTR A 0 A_SpawnItemEx("RFTRHeadBox8", 8, 0, 47, 0, 0, 0, 0, 16)
+		RFTR A 0 A_CheckProximity("OhNo", "MonsterShocker",250,1,CPXF_CHECKSIGHT)
+		RFTR A 0 A_CheckProximity("TakeArmorShard", "ArmorShard",50,1)
+		RFTR A 0 A_CheckProximity("TakeArmorHelmet", "ArmorHelmet",50,1)
+		RFTR A 0 A_CheckProximity("TakeSalvagedArmorBonus", "SalvagedArmorBonus",50,1)
+	  RFTR BB 4 A_Chase 
+		RFTR C 0 A_JumpIfCloser (80, "SeeClose") 
+		RFTR A 0 A_SpawnItemEx("RFTRHeadBox8", 8, 0, 47, 0, 0, 0, 0, 16)
+		RFTR A 0 A_CheckProximity("OhNo", "MonsterShocker",250,1,CPXF_CHECKSIGHT)
+		RFTR A 0 A_CheckProximity("TakeArmorShard", "ArmorShard",50,1)
+		RFTR A 0 A_CheckProximity("TakeArmorHelmet", "ArmorHelmet",50,1)
+		RFTR A 0 A_CheckProximity("TakeSalvagedArmorBonus", "SalvagedArmorBonus",50,1)
+	   RFTR CC 4 A_Chase 
+		RFTR D 0 A_JumpIfCloser (80, "SeeClose") 
+		RFTR A 0 A_SpawnItemEx("RFTRHeadBox8", 8, 0, 47, 0, 0, 0, 0, 16)
+		RFTR A 0 A_CheckProximity("OhNo", "MonsterShocker",250,1,CPXF_CHECKSIGHT)
+		RFTR A 0 A_CheckProximity("TakeArmorShard", "ArmorShard",50,1)
+		RFTR A 0 A_CheckProximity("TakeArmorHelmet", "ArmorHelmet",50,1)
+		RFTR A 0 A_CheckProximity("TakeSalvagedArmorBonus", "SalvagedArmorBonus",50,1)
+	   RFTR DD 4 A_Chase 
+	  Loop
+   SeeClose:
+	  RFTR A 0 A_CheckLOF( "Runaway1", CLOFF_IGNOREGHOST | CLOFF_JUMPOBJECT, 500 )
+	  GoTo AimingMomentLong
+   AimingMomentLong:
+      RFTR E 0 A_SpawnItemEx("RFTRHeadBox8", 4, 0, 47, 0, 0, 0, 0, 16)
+	  RFTR E 2 A_FaceTarget
+	  RFTR E 6 A_CheckLOF( "LineClear", CLOFF_IGNOREGHOST | CLOFF_JUMPOBJECT, 1800 )
+	  RFTR E 0 A_SpawnItemEx("RFTRHeadBox8", 4, 0, 47, 0, 0, 0, 0, 16)
+	  RFTR E 2 A_FaceTarget
+	  RFTR E 6 A_CheckLOF( "LineClear", CLOFF_IGNOREGHOST | CLOFF_JUMPOBJECT, 1800 )
+	  RFTR E 0 A_Jump(200,"AimingMomentLong")
+	  GoTo See
+   AttackRight: 
+	  RFTR A 0 A_SpawnItemEx("RFTRHeadBox4", 8, 0, 47, 0, 0, 0, 0, 16)
+	  RFTR V 1 A_FaceTarget
+      RFTR V 2 A_ChangeVelocity (0, 2, 0, CVF_RELATIVE) 
+	  RFTR E 3 A_ChangeVelocity (0, 1, 0, CVF_RELATIVE) 
+      RFTR A 0 A_SpawnItemEx("RFTRHeadBox4", 8, 0, 47, 0, 0, 0, 0, 16)
+	  RFTR V 1 A_FaceTarget
+      RFTR V 2 A_ChangeVelocity (0, 2, 0, CVF_RELATIVE) 
+	  RFTR E 3 A_ChangeVelocity (0, 1, 0, CVF_RELATIVE) 
+	  RFTR A 0 A_SpawnItemEx("RFTRHeadBox8", 8, 0, 47, 0, 0, 0, 0, 16)
+	  RFTR E 4 A_FaceTarget
+	  RFTR E 0 A_CheckLOF( "AttackRightFire", CLOFF_IGNOREGHOST | CLOFF_JUMPOBJECT, 2500 )
+	  Goto AttackRight2
+	AttackRightFire:
+	  RFTR W 4 Bright A_PosAttack
+	  RFTR A 0 A_SpawnItemEx("RFTRHeadBox4", 8, 0, 47, 0, 0, 0, 0, 16)
+	AttackRight2:
+		RFTR V 1 A_FaceTarget
+		RFTR V 2 A_ChangeVelocity (0, 2, 0, CVF_RELATIVE) 
+		RFTR E 3 A_ChangeVelocity (0, 1, 0, CVF_RELATIVE) 
+		RFTR A 0 A_SpawnItemEx("RFTRHeadBox4", 8, 0, 47, 0, 0, 0, 0, 16)
+		RFTR V 1 A_FaceTarget
+		RFTR V 2 A_ChangeVelocity (0, 2, 0, CVF_RELATIVE) 
+		RFTR E 3 A_ChangeVelocity (0, 1, 0, CVF_RELATIVE) 
+		RFTR E 5 A_FaceTarget
+		RFTR E 0 A_SpawnItemEx("RFTRHeadBox8", 8, 0, 47, 0, 0, 0, 0, 16)
+		RFTR E 0 A_CheckLOF( "AttackRightFire2", CLOFF_IGNOREGHOST | CLOFF_JUMPOBJECT, 2500 )
+		Goto See
+	  AttackRightFire2:
+		RFTR W 4 Bright A_PosAttack
+		RFTR E 0 A_JumpIfCloser (80, "SeeClose") 
+		RFTR E 3 A_ChangeVelocity (0, 1, 0, CVF_RELATIVE) 
+		RFTR E 0 A_Jump(200,"AttackRight", "AttackLeft", "AttackLow")
+		Goto see
+   AttackLeft: 
+	  RFTR A 0 A_SpawnItemEx("RFTRHeadBox4", 8, 0, 47, 0, 0, 0, 0, 16)
+	  RFTR V 1 A_FaceTarget
+      RFTR V 2 A_ChangeVelocity (0, -2, 0, CVF_RELATIVE) 
+	  RFTR E 3 A_ChangeVelocity (0, -1, 0, CVF_RELATIVE) 
+      RFTR A 0 A_SpawnItemEx("RFTRHeadBox4", 8, 0, 47, 0, 0, 0, 0, 16)
+	  RFTR V 1 A_FaceTarget
+      RFTR V 2 A_ChangeVelocity (0, -2, 0, CVF_RELATIVE) 
+	  RFTR E 3 A_ChangeVelocity (0, -1, 0, CVF_RELATIVE) 
+	  RFTR A 0 A_SpawnItemEx("RFTRHeadBox4", 8, 0, 47, 0, 0, 0, 0, 16)
+	  RFTR E 4 A_FaceTarget
+	  RFTR A 0 A_SpawnItemEx("RFTRHeadBox4", 8, 0, 47, 0, 0, 0, 0, 16)
+	  RFTR E 0 A_CheckLOF( "AttackLeftFire", CLOFF_IGNOREGHOST | CLOFF_JUMPOBJECT, 2500 )
+	  Goto AttackLeft2
+	AttackLeftFire:
+	  RFTR W 4 Bright A_PosAttack
+	AttackLeft2:
+		RFTR V 1 A_FaceTarget
+		RFTR A 0 A_SpawnItemEx("RFTRHeadBox4", 8, 0, 47, 0, 0, 0, 0, 16)
+		RFTR V 2 A_ChangeVelocity (0, -2, 0, CVF_RELATIVE) 
+		RFTR E 3 A_ChangeVelocity (0, -1, 0, CVF_RELATIVE) 
+		RFTR A 0 A_SpawnItemEx("RFTRHeadBox4", 8, 0, 47, 0, 0, 0, 0, 16)
+		RFTR V 1 A_FaceTarget
+		RFTR V 2 A_ChangeVelocity (0, -2, 0, CVF_RELATIVE) 
+		RFTR E 3 A_ChangeVelocity (0, -1, 0, CVF_RELATIVE) 
+		RFTR E 4 A_FaceTarget
+		RFTR A 0 A_SpawnItemEx("RFTRHeadBox4", 8, 0, 47, 0, 0, 0, 0, 16)
+		RFTR E 0 A_CheckLOF( "AttackLeftFire2", CLOFF_IGNOREGHOST | CLOFF_JUMPOBJECT, 2500 )
+		Goto See
+	AttackLeftFire:
+		RFTR W 4 Bright A_PosAttack
+		RFTR E 0 A_JumpIfCloser (80, "SeeClose") 
+		RFTR E 3 A_ChangeVelocity (0, -1, 0, CVF_RELATIVE) 
+		RFTR E 0 A_Jump(200,"AttackRight", "AttackLeft", "AttackLow")
+		Goto see
+   AttackLow:
+	  RFTR Y 3 A_FaceTarget
+	  RFTR Y 1 A_CheckLOF( "AttackLowFire", CLOFF_IGNOREGHOST | CLOFF_JUMPOBJECT, 2500 )
+	  Goto See
+	AttackLowFire:
+	  RFTR X 5 Bright A_PosAttack
+	  RFTR Y 3 A_FaceTarget
+	  RFTR X 5 Bright A_PosAttack
+	  RFTR Y 3 A_FaceTarget
+	  RFTR X 5 Bright A_PosAttack
+	  RFTR E 0 A_Jump(200,"AttackRight", "AttackLeft")
+	  Goto see
+   Missile: 
+      RFTR E 0 A_JumpIfCloser (1500, "TargetInRange")
+	  Goto See
+	TargetInRange:
+	  RFTR G 0 A_Jump(10,"AttackRight", "AttackLeft")
+	  RFTR A 0 A_SpawnItemEx("RFTRHeadBox8", 4, 0, 47, 0, 0, 0, 0, 16)
+	  RFTR E 6 A_FaceTarget 
+      RFTR E 0 A_CheckLOF( "LineClear", CLOFF_IGNOREGHOST | CLOFF_JUMPOBJECT | CLOFF_JUMP_ON_MISS, 1800 )
+	  Goto AimingMoment
+	LineClear:
+	  RFTR A 0 A_SpawnItemEx("RFTRHeadBox8", 4, 0, 47, 0, 0, 0, 0, 16)
+	  RFTR E 2 A_FaceTarget 
+      RFTR F 5 Bright A_PosAttack
+      RFTR E 2 A_CPosRefire
+	  Goto See
+   AimingMoment:
+      RFTR E 0 A_SpawnItemEx("RFTRHeadBox8", 4, 0, 47, 0, 0, 0, 0, 16)
+	  RFTR E 4 A_FaceTarget
+	  RFTR E 4 A_CheckLOF( "LineClear", CLOFF_IGNOREGHOST | CLOFF_JUMPOBJECT, 1800 )
+	  RFTR E 0 A_SpawnItemEx("RFTRHeadBox8", 4, 0, 47, 0, 0, 0, 0, 16)
+	  RFTR E 4 A_FaceTarget
+	  RFTR E 4 A_CheckLOF( "LineClear", CLOFF_IGNOREGHOST | CLOFF_JUMPOBJECT, 1800 )
+	  RFTR E 0 A_Jump(128,"AimingMoment")
+	  GoTo StrafeAiming
+	StrafeAiming:
+      RFTR E 0 A_SpawnItemEx("RFTRHeadBox8", 4, 0, 47, 0, 0, 0, 0, 16)
+	  RFTR VEVE 4 A_Chase("Runaway1","Missile",CHF_NODIRECTIONTURN)
+	  RFTR E 4 A_CheckLOF( "LineClear", CLOFF_IGNOREGHOST | CLOFF_JUMPOBJECT, 1800 )
+	  GoTo See
+//Aiming Scared
+	AimingScared:
+		RFTR A 0 A_SpawnItemEx("RFTRHeadBox8", 4, 0, 47, 0, 0, 0, 0, 16)
+		RFTR E 3 A_FaceTarget
+		RFTR E 1 A_CheckLOF( "AimingAtLastSeen", CLOFF_IGNOREGHOST | CLOFF_JUMPOBJECT, 1800 )
+		Goto AimingScared
+	AimingScaredFire:
+		RFTR F 5 Bright A_PosAttack
+		RFTR E 5 A_CPosRefire
+		GoTo See
+	AimingAtLastSeen:
+		RFTR A 0 A_SpawnItemEx("RFTRHeadBox4", 4, 0, 47, 0, 0, 0, 0, 16)
+		RFTR E 2
+		RFTR E 0 A_CheckLOF( "AimingAtLastSeenFire", CLOFF_IGNOREGHOST | CLOFF_JUMPOBJECT, 1800 )
+		Goto AimingAtLastSeen
+	AimingAtLastSeenFire:
+		RFTR E 2 A_PlaySound ("grunt/sight")
+		RFTR E 0 A_JumpIfCloser (60, "Missile2RunAway")
+		RFTR A 0 A_SpawnItemEx("RFTRHeadBox8", 4, 0, 47, 0, 0, 0, 0, 16)
+		RFTR E 8 A_FaceTarget
+		RFTR F 5 Bright A_PosAttack
+		RFTR E 5 A_CPosRefire
+		GoTo See
+	Missile2RunAway: 
+		RFTR A 0 A_SpawnItemEx("RFTRHeadBox8", 4, 0, 47, 0, 0, 0, 0, 16)
+		RFTR E 8 A_FaceTarget 
+		RFTR A 0 A_SpawnItemEx("RFTRHeadBox8", 4, 0, 47, 0, 0, 0, 0, 16)
+		RFTR F 5 Bright A_PosAttack
+		RFTR E 2
+		Goto Runaway1
+//RunAway
+   Runaway1:
+	  RFTR A 0 A_SpawnItemEx("RFTRHeadBox8", 0, 0, 47, 0, 0, 0, 0, 16)
+	  RFTR DD 3 A_ChangeVelocity (-1, 0, 0, CVF_RELATIVE) 
+	  RFTR A 0 A_SpawnItemEx("RFTRHeadBox8", 0, 0, 46, 0, 0, 0, 0, 16)
+	  RFTR CC 3 A_ChangeVelocity (-1, 0, 0, CVF_RELATIVE) 
+	  RFTR A 0 A_SpawnItemEx("RFTRHeadBox8", 0, 0, 47, 0, 0, 0, 0, 16)
+	  RFTR BB 3 A_ChangeVelocity (-1, 0, 0, CVF_RELATIVE) 
+	  RFTR A 0 A_SpawnItemEx("RFTRHeadBox8", 0, 0, 46, 0, 0, 0, 0, 16)
+	  RFTR AA 3 A_ChangeVelocity (-1, 0, 0, CVF_RELATIVE) 
+      RFTR C 0 A_CheckLOF( "Runaway1Fire", CLOFF_IGNOREGHOST | CLOFF_JUMPOBJECT | CLOFF_JUMP_ON_MISS, 2500 )
+	  Goto AimingRunaway1
+	Runaway1Fire:
+	  RFTR A 0 A_SpawnItemEx("RFTRHeadBox8", 4, 0, 47, 0, 0, 0, 0, 16)
+	  RFTR E 7 A_FaceTarget
+	  RFTR F 5 Bright A_PosAttack
+	  GoTo Runaway2
+   Runaway2:
+	  RFTR C 0 A_CheckLOF( "Runaway2Fire", CLOFF_IGNOREGHOST | CLOFF_JUMPOBJECT, 2500 )
+	  Goto Runaway2Face+1
+	Runaway2Face:
+	  RFTR A 0 A_FaceTarget
+	  RFTR A 0 A_SpawnItemEx("RFTRHeadBox8", 0, 0, 47, 0, 0, 0, 0, 16)
+	  RFTR DD 3 A_ChangeVelocity (-1, 0, 0, CVF_RELATIVE) 
+	  RFTR A 0 A_SpawnItemEx("RFTRHeadBox8", 0, 0, 47, 0, 0, 0, 0, 16)
+	  RFTR CC 3 A_ChangeVelocity (-1, 0, 0, CVF_RELATIVE) 
+	  RFTR A 0 A_SpawnItemEx("RFTRHeadBox8", 0, 0, 47, 0, 0, 0, 0, 16)
+	  RFTR BB 3 A_ChangeVelocity (-1, 0, 0, CVF_RELATIVE) 
+	  RFTR A 0 A_SpawnItemEx("RFTRHeadBox8", 0, 0, 47, 0, 0, 0, 0, 16)
+	  RFTR AA 3 A_ChangeVelocity (-1, 0, 0, CVF_RELATIVE)
+      RFTR C 0 A_CheckLOF( "Runaway2Fire", CLOFF_IGNOREGHOST | CLOFF_JUMPOBJECT, 2500 )
+	  Goto AimingRunaway1
+	Runaway2Fire:
+	  RFTR A 0 A_SpawnItemEx("RFTRHeadBox8", 4, 0, 47, 0, 0, 0, 0, 16)
+	  RFTR E 7 A_FaceTarget
+	  RFTR F 5 Bright A_PosAttack
+	  RFTR E 0 A_Jump(50,"Runaway1")
+	  GoTo AimingRunaway1
+   AimingRunaway1:
+	  RFTR A 0 A_SpawnItemEx("RFTRHeadBox4", 4, 0, 47, 0, 0, 0, 0, 16)
+	  RFTR E 2 A_CheckLOF("AimingRunaway1Fire", CLOFF_IGNOREGHOST | CLOFF_JUMPOBJECT, 2500 )
+	  Goto AimingRunaway2
+	AimingRunaway1Fire:
+	  RFTR A 0 A_SpawnItemEx("RFTRHeadBox4", 4, 0, 47, 0, 0, 0, 0, 16)
+	  RFTR E 4 A_FaceTarget
+	  RFTR A 0 A_SpawnItemEx("RFTRHeadBox4", 4, 0, 47, 0, 0, 0, 0, 16)
+	  RFTR F 5 Bright A_PosAttack
+	  RFTR A 0 A_SpawnItemEx("RFTRHeadBox4", 4, 0, 47, 0, 0, 0, 0, 16)
+	  RFTR E 5 A_CPosRefire
+	  GoTo SEE
+   AimingRunaway2:
+      RFTR A 0 A_SpawnItemEx("RFTRHeadBox4", 4, 0, 47, 0, 0, 0, 0, 16)
+	  RFTR E 3
+	  RFTR E 2 A_CheckLOF( "AimingRunaway2Fire", CLOFF_IGNOREGHOST | CLOFF_JUMPOBJECT, 2500 )
+	  Goto AimingRunaway2
+	AimingRunaway2Fire:
+	  RFTR E 2 A_PlaySound ("grunt/sight")
+	  RFTR A 0 A_SpawnItemEx("RFTRHeadBox8", 4, 0, 47, 0, 0, 0, 0, 16)
+	  RFTR E 10 A_FaceTarget
+	  RFTR F 5 Bright A_PosAttack
+	  GoTo SEE
+   Aiming:
+		RFTR A 0 A_SpawnItemEx("RFTRHeadBox8", 4, 0, 47, 0, 0, 0, 0, 16)
+		RFTR E 2 A_FaceTarget
+		RFTR E 4 A_CheckLOF( "AimingFire", CLOFF_IGNOREGHOST | CLOFF_JUMPOBJECT, 1800 )
+		Goto Aiming
+	AimingFire:
+		RFTR E 0 A_CheckLOF( "Runaway1Fire", CLOFF_IGNOREGHOST, 300 )
+		RFTR E 0 A_CheckLOF( "AimingMissile", CLOFF_IGNOREGHOST, 3000 )
+		RFTR F 5 Bright A_PosAttack
+		RFTR E 5 A_CPosRefire
+		GoTo See
+	Pain: 
+      RFTR A 0 A_SpawnItemEx("RFTRHeadBox8", 4, 0, 47, 0, 0, 0, 0, 16)
+	  RFTR G 3
+      RFTR G 3 A_Pain 
+      RFTR G 0 A_JumpIfHealthLower (10, "RunawayFrightened")
+	  RFTR G 0 A_Jump(128,"AttackRight", "AttackLeft")
+	  Goto See
+//Special .A.I
+	SpecialActions:
+		RFTR A 0 A_CheckProximity("DontMove", "DontMove",300,1)
+		RFTR A 0 A_CheckProximity("Aiming", "Aim",300,1)
+		RFTR E 0 A_CheckProximity("GoForAlert", "AlertBotton",400,1, CPXF_SETTARGET)
+	    RFTR A 0 A_CheckProximity("GoCollectCheck", "GoCollect",100,1 )
+		Goto See+1
+	GoCollectCheck:
+		RFTR A 0 A_CheckProximity("GoCollect", "ArmorHelmet",2000,1,CPXF_CLOSEST|CPXF_SETMASTER)
+		RFTR A 0 A_CheckProximity("GoCollect", "ArmorShard",2000,1,CPXF_CLOSEST|CPXF_SETMASTER)
+		RFTR A 0 A_CheckProximity("GoCollect", "SalvagedArmorBonus",2000,1,CPXF_CLOSEST|CPXF_SETMASTER)
+		Goto SeeChase
+	GoCollect:
+		RFTR A 1
+		RFTR A 5 A_FaceMaster
+		RFTR A 5 A_ChangeVelocity(1, 0, 0, CVF_RELATIVE) 
+		RFTR A 0 A_CheckProximity("TakeArmorShard", "ArmorShard",50,1)
+		RFTR A 0 A_CheckProximity("TakeArmorHelmet", "ArmorHelmet",50,1)
+		RFTR A 0 A_CheckProximity("TakeSalvagedArmorBonus", "SalvagedArmorBonus",50,1)
+		RFTR B 5 A_ChangeVelocity(1, 0, 0, CVF_RELATIVE) 
+		RFTR A 0 A_CheckProximity("TakeArmorShard", "ArmorShard",50,1)
+		RFTR A 0 A_CheckProximity("TakeArmorHelmet", "ArmorHelmet",50,1)
+		RFTR A 0 A_CheckProximity("TakeSalvagedArmorBonus", "SalvagedArmorBonus",50,1)
+		RFTR C 5 A_ChangeVelocity(1, 0, 0, CVF_RELATIVE) 
+		RFTR A 0 A_CheckProximity("TakeArmorShard", "ArmorShard",50,1)
+		RFTR A 0 A_CheckProximity("TakeArmorHelmet", "ArmorHelmet",50,1)
+		RFTR A 0 A_CheckProximity("TakeSalvagedArmorBonus", "SalvagedArmorBonus",50,1)
+		RFTR D 5 A_ChangeVelocity(1, 0, 0, CVF_RELATIVE) 
+		RFTR A 0 A_CheckProximity("TakeArmorShard", "ArmorShard",50,1)
+		RFTR A 0 A_CheckProximity("TakeArmorHelmet", "ArmorHelmet",50,1)
+		RFTR A 0 A_CheckProximity("TakeSalvagedArmorBonus", "SalvagedArmorBonus",50,1)
+		Loop
+	DontMove:
+		RFTR EEEEEEEE 4 A_Chase(0, "DontMoveMissile", CHF_DONTMOVE | CHF_NODIRECTIONTURN )
+		RFTR E 1 A_FaceTarget
+		Loop
+	DontMoveFaceTarget:
+			RFTR E 1 A_FaceTarget 
+			Goto DontMove
+	DontMoveMissile:
+			RFTR A 0 A_SpawnItemEx("RFTRHeadBox8", 4, 0, 47, 0, 0, 0, 0, 16)
+			RFTR E 6 A_FaceTarget 
+			RFTR E 0 A_CheckLOF( "DontMoveLineClear", CLOFF_IGNOREGHOST | CLOFF_JUMPOBJECT | CLOFF_JUMP_ON_MISS, 3000 )
+			Goto AimingMoment
+	DontMoveLineClear:
+			RFTR A 0 A_SpawnItemEx("RFTRHeadBox8", 4, 0, 47, 0, 0, 0, 0, 16)
+			RFTR E 2 A_FaceTarget 
+			RFTR F 5 Bright A_PosAttack
+			Goto DontMove
+	GoForAlert:
+		RFTR AABBCCDD 4 A_Chase
+		Goto See
+//Frightened
+   RunawayFrightened:
+      RFTR E 0 A_ChangeFlag("FRIGHTENED", 1)
+	  RFTR E 0 A_FaceTarget
+	  RFTR E 0 A_ChangeVelocity (-3, 0, 0, CVF_RELATIVE)
+	  RFTR A 0 A_SpawnItemEx("RFTRHeadBox4", 0, 0, 47, 0, 0, 0, 0, 16)
+	  RFTR BBAA 3 A_SpawnItemEx ("NashGore_FlyingBlood_Small", 0, 0, 0, 0, 0, 0, 0, 0, 30)
+	  RFTR E 0 A_ChangeVelocity (-3, 0, 0, CVF_RELATIVE)
+	  RFTR A 0 A_SpawnItemEx("RFTRHeadBox4", 0, 0, 47, 0, 0, 0, 0, 16)
+	  RFTR DDCC 3 A_SpawnItemEx ("NashGore_FlyingBlood_Small", 0, 0, 0, 0, 0, 0, 0, 0, 30)
+	  RFTR A 0 A_SpawnItemEx("RFTRHeadBox8", 0, 0, 47, 0, 0, 0, 0, 16)
+	  RFTR E 2 A_FaceTarget
+	  RFTR F 5 Bright A_PosAttack
+	  RFTR E 5 A_CPosRefire
+	  RFTR E 0 A_ChangeVelocity (-3, 0, 0, CVF_RELATIVE)
+	  RFTR A 0 A_SpawnItemEx("RFTRHeadBox4", 0, 0, 47, 0, 0, 0, 0, 16)
+	  RFTR BBAA 3 A_SpawnItemEx ("NashGore_FlyingBlood_Small", 0, 0, 0, 0, 0, 0, 0, 0, 30)
+	  RFTR E 0 A_ChangeVelocity (-3, 0, 0, CVF_RELATIVE)
+	  RFTR A 0 A_SpawnItemEx("RFTRHeadBox4", 0, 0, 47, 0, 0, 0, 0, 16)
+	  RFTR DDCC 3 A_SpawnItemEx ("NashGore_FlyingBlood_Small", 0, 0, 0, 0, 0, 0, 0, 0, 30)
+	  RFTR A 0 A_SpawnItemEx("RFTRHeadBox8", 0, 0, 47, 0, 0, 0, 0, 16)
+	  RFTR E 5 A_FaceTarget
+	  RFTR F 5 Bright A_PosAttack
+	  RFTR A 0 A_SpawnItemEx("RFTRHeadBox8", 0, 0, 47, 0, 0, 0, 0, 16)
+	  RFTR E 5 A_FaceTarget
+	  RFTR F 5 Bright A_PosAttack
+	  RFTR E 5 A_CPosRefire
+	  GoTo SeeFrightened
+   SeeFrightened:
+      RFTR A 0 A_SpawnItemEx("RFTRHeadBox4", 0, 0, 46, 0, 0, 0, 0, 16)
+	  RFTR A 0 A_SpawnItemEx ("NashGore_FlyingBlood_Small", 0, 0, 0, 0, 0, 0, 0, 0, 30)
+	  RFTR AA 4 A_Chase 
+      RFTR A 0 A_SpawnItemEx("RFTRHeadBox4", 0, 0, 46, 0, 0, 0, 0, 16)
+	  RFTR A 0 A_SpawnItemEx ("NashGore_FlyingBlood_Small", 0, 0, 0, 0, 0, 0, 0, 0, 30)
+	  RFTR BB 4 A_Chase
+	  RFTR A 0 A_SpawnItemEx("RFTRHeadBox4", 0, 0, 46, 0, 0, 0, 0, 16)
+	  RFTR A 0 A_SpawnItemEx ("NashGore_FlyingBlood_Small", 0, 0, 0, 0, 0, 0, 0, 0, 30)
+	  RFTR CC 4 A_Chase
+	  RFTR A 0 A_SpawnItemEx("RFTRHeadBox4", 0, 0, 46, 0, 0, 0, 0, 16)
+	  RFTR A 0 A_SpawnItemEx ("NashGore_FlyingBlood_Small", 0, 0, 0, 0, 0, 0, 0, 0, 30)
+	  RFTR DD 4 A_Chase
+	  RFTR A 0 A_SpawnItemEx ("NashGore_FlyingBlood_Small", 0, 0, 0, 0, 0, 0, 0, 0, 16) 
+	  RFTR A 0 A_Jump(5, "RunawayAttack")
+	  Loop  
+   RunawayAttack:
+	  RFTR E 0 A_ChangeVelocity (-2, 0, 0, CVF_RELATIVE) 
+	  RFTR BBAA 4
+	  RFTR E 0 A_ChangeVelocity (-2, 0, 0, CVF_RELATIVE)
+	  RFTR E 2 A_FaceTarget
+	  RFTR F 5 Bright A_PosAttack
+	  RFTR E 5 A_CPosRefire
+	  RFTR E 0 A_ChangeVelocity (-2, 0, 0, CVF_RELATIVE) 
+	  RFTR DDCC 4
+	  RFTR E 0 A_ChangeVelocity (-2, 0, 0, CVF_RELATIVE) 
+	  RFTR E 2 A_FaceTarget
+	  RFTR F 5 Bright A_PosAttack
+	  RFTR E 2 A_FaceTarget
+	  RFTR F 5 Bright A_PosAttack
+	  RFTR E 5 A_CPosRefire
+	  RFTR E 0 A_ChangeVelocity (-2, 0, 0, CVF_RELATIVE) 
+	  RFTR BBAA 4
+	  RFTR E 0 A_ChangeVelocity (-2, 0, 0, CVF_RELATIVE)
+	  RFTR E 2 A_FaceTarget
+	  RFTR F 5 Bright A_PosAttack
+	  RFTR E 5 A_CPosRefire
+	  RFTR E 0 A_ChangeVelocity (-2, 0, 0, CVF_RELATIVE) 
+	  RFTR DDCC 4
+	  RFTR E 0 A_ChangeVelocity (-2, 0, 0, CVF_RELATIVE) 
+	  RFTR E 2 A_FaceTarget
+	  RFTR F 5 Bright A_PosAttack
+	  RFTR E 2 A_FaceTarget
+	  RFTR F 5 Bright A_PosAttack
+	  RFTR E 5 A_CPosRefire
+	  GoTo SeeFrightened
+   Death: 
+      RFTR H 5 
+      RFTR I 5 A_Scream 
+      RFTR J 5 A_Fall 
+      RFTR K 5 
+      RFTR L -1 
+      Stop
+    Death.headshot: 
+		RFTH A 1 A_SpawnItemEx("BrutalBlood", -1, 0, 43, 0, 0, 0, 0, 0, 0)
+		RFTH A 2 A_XScream
+		RFTH A 2 A_SpawnItemEx("NashGore_FlyingBlood", -1, 0, 46, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 30)
+		RFTH A 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 46, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 30)
+		RFTH A 2 A_SpawnItemEx("NashGore_FlyingBlood", -1, 0, 46, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 40)
+		RFTH B 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 30, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 50)
+        RFTH B 2 A_SpawnItemEx("NashGore_FlyingBlood", -1, 0, 30, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 60)
+        RFTH B 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 30, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 70)
+        RFTH B 2 A_SpawnItemEx("NashGore_FlyingBlood", -1, 0, 30, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 80)
+        RFTH B 1 A_Fall
+		RFTH C 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 30, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 50)
+        RFTH C 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 30, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 50)
+        RFTH C 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 30, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 50)
+        RFTH C 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 30, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 50)
+        RFTH C 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 20, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 50)
+        RFTH D 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 20, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 50)
+        RFTH D 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 20, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 50)
+        RFTH D 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 20, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 50)
+        RFTH D 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 20, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 50)
+        RFTH D 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 20, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 50)
+        RFTH D 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 20, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 50)
+        RFTH E -1
+		Stop
+	Death.headblow: 
+		RFTH H 1 A_SpawnItemEx("RFTRHead", 0, 0, 46, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 30)
+		RFTH H 1 A_SpawnItemEx("BrutalBlood", 0, 0, 43, 0, 0, 0, 0, 0, 0)
+		RFTH H 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 46, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 30)
+		RFTH H 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 46, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 30)
+		RFTH H 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 46, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 30)
+		RFTH H 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 46, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 30)
+		RFTH I 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 30)
+        RFTH I 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 30)
+        RFTH I 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 30)
+        RFTH I 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 30)
+        RFTH I 1 A_Fall
+		RFTH J 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 50)
+        RFTH J 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 50)
+        RFTH J 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 50)
+        RFTH J 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 50)
+        RFTH J 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 50)
+        RFTH K 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 50)
+        RFTH K 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 50)
+        RFTH K 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 50)
+        RFTH K 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 50)
+        RFTH K 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 50)
+        RFTH K 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 50)
+        RFTH l -1
+		Stop
+	Death.headshotPlasma: 
+		RFTH H 1 A_SpawnItemEx("ZombieSkull", 0, 0, 46, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 30)
+		RFTH H 1 A_SpawnItemEx("BrutalBlood", 0, 0, 43, 0, 0, 0, 0, 0, 0)
+		RFTH H 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 46, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 0)
+		RFTH I 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 50)
+        RFTH I 1 A_Fall
+		RFTH J 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 90)
+        RFTH J 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 90)
+        RFTH J 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 90)
+        RFTH J 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 90)
+        RFTH J 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 90)
+        RFTH K 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 90)
+        RFTH K 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 90)
+        RFTH K 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 90)
+        RFTH K 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 90)
+        RFTH K 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 90)
+        RFTH K 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 0, 90)
+        RFTH l -1
+		Stop
+	XDeath:
+      RFTR M 5
+	  RFTR N 5 A_XScream
+      RFTR N 5 A_SpawnItemEx("FreezHeadPlazma", 0, 0, 48, random(-2, 2), random(-2, 2), random(4, 4), 0, 0, 0)
+      RFTR P 5 A_Fall
+      RFTR QRST 5
+      RFTR U -1
+      Stop
+   Raise: 
+      RFTR KJ 5 
+      RFTR IH 5 
+      Goto See 
+   } 
+}
+
+//-----------------
+// Head Boxes
+//-----------------
+
+actor RFTRHeadBox8
+{
+  +ismonster
+  -countkill
+  +shootable
+  +nogravity
+  +nodamagethrust
+  +noradiusdmg
+  +NoiceDeath
+  PainChance 250
+  DamageFactor "Ice", 0.3
+  DamageFactor "Lightning", 0.9
+  RenderStyle Add
+  Alpha 0.0
+  health 11
+  Radius 8
+  Height 10
+  scale 1.0
+  States
+  {
+  Spawn:
+    FRPP A 8
+    Stop
+  Pain:
+    FRPP A 0 A_DamageMaster( 20, None, DMSS_INFLICTORDMGTYPE, None, None, AAPTR_DEFAULT)
+	FRPP A 0 A_SpawnItemEx ("NashGore_FlyingBlood_Small", 1, 0, 0, 0, 0, 0, 0, 0, 30)
+	Stop
+  Death:
+    FRPP A 0 A_KillMaster("headshot")
+    stop
+  Death.Lightning:
+    FRPP A 0 A_KillMaster("headshotPlasma")
+    FRPP A 0 A_Remove(AAPTR_DEFAULT)
+	stop
+  XDeath:
+    FRPP A 0 A_KillMaster("headblow")
+    FRPP A 0 A_Remove(AAPTR_DEFAULT)
+	stop
+  }
+}
+
+actor RFTRHeadBox4
+{
+  +ismonster
+  -countkill
+  +shootable
+  +nogravity
+  +nodamagethrust
+  +noradiusdmg
+  +NoiceDeath
+  PainChance 250
+  DamageFactor "Ice", 0.3
+  DamageFactor "Lightning", 0.9
+  RenderStyle Add
+  Alpha 0.0
+  health 11
+  Radius 8
+  Height 10
+  scale 1.0
+  States
+  {
+  Spawn:
+    FRPP A 4
+    Stop
+  Pain:
+    FRPP A 0 A_DamageMaster( 20, None, DMSS_INFLICTORDMGTYPE, None, None, AAPTR_DEFAULT)
+	FRPP A 0 A_SpawnItemEx ("NashGore_FlyingBlood_Small", 1, 0, 0, 0, 0, 0, 0, 0, 30)
+	Stop
+  Death:
+    FRPP A 0 A_KillMaster("headshot")
+    FRPP A 0 A_Remove(AAPTR_DEFAULT)
+	stop
+  Death.Lightning:
+    FRPP A 0 A_KillMaster("headshotPlasma")
+    FRPP A 0 A_Remove(AAPTR_DEFAULT)
+	stop
+  XDeath:
+    FRPP A 0 A_KillMaster("headblow")
+    FRPP A 0 A_Remove(AAPTR_DEFAULT)
+	stop
+  }
+}
+
+//-----------------
+// Where AM I?
+//-----------------
+
+actor RFTIsDogRAvl
+{
+ game Doom
+ health 50
+ radius 8
+ height 8
+ mass 4
+ Alpha 0.8
+ -countkill
+ -SOLID
+ +NOBLOCKMAP
+ states
+ {
+ Spawn:
+  DOGE B 25 
+  stop
+ }
+}
+
+actor RFTIsDogLAvl
+{
+ game Doom
+ health 50
+ radius 8
+ height 8
+ mass 4
+ Alpha 0.8
+ -countkill
+ -SOLID
+ +NOBLOCKMAP
+ states
+ {
+ Spawn:
+  DOGE A 25
+  stop
+ }
+}
+
+actor RFTIsDogBAvl
+{
+ game Doom
+ health 50
+ radius 8
+ height 8
+ mass 4
+ Alpha 0.8
+ -countkill
+ -SOLID
+ +NOBLOCKMAP
+ states
+ {
+ Spawn:
+  DOGE C 25
+  stop
+ }
+}
+
+//-----------------
+// Head Actors
+//-----------------
+
+actor RFTRHead 12000
+{
+ game Doom
+ health 40
+ radius 6
+ height 10
+ mass 4
+ gravity 0.5
+ -countkill
+ +CORPSE
+ -SOLID
+ +NOBLOCKMAP
+ states
+ {
+ Spawn:
+  RFTH G 0 A_SpawnItem("MonsterShocker",0,0,0,1)
+  RFTH G 1 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 143, 176)
+  RFTH G 1 A_SpawnItem("NashGore_FlyingBloodTrail",0,0,0,1)
+  Loop
+ Crash:
+  RFTH G -1
+  stop
+ }
+}
+

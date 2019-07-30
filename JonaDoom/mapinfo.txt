@@ -1,0 +1,45 @@
+clearepisodes
+
+episode "JND01"
+{
+	name = "JonaDoom"
+}
+
+defaultmap
+{
+	nointermission 
+	keepfullinventory 
+	allowrespawn 
+	noinfighting 
+	next = MAP99
+	secretnext = MAP99
+}
+
+map JND01 "Too Young to Die"
+{
+	levelnum = 1
+	sky1 = ORBIT, 0.6
+	music = "TRANSISTOR_FIST"
+}
+
+//////////////// INTERMAP ////////////////
+map MAP99 "Intermission"
+{
+	levelnum = 999
+	sky1 = BROM, 0.0
+	music = "D_INT"
+}
+//////////////// TITLEMAP ////////////////
+map TITLEMAP "Titlemap"
+{
+	music = "TBM_OCEA"
+	evenlighting 
+	next = TITLEMAP
+}
+
+map CREDMAP "End & Credits"
+{
+	evenlighting 
+	music = "CM_MUS2"
+	next = CREDMAP
+}

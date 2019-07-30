@@ -1,0 +1,420 @@
+//--------------------------------
+// Monster AI - Enviroment Actions
+//--------------------------------
+
+actor SpecialAction 10702
+{
+ //$Category MonsterAI
+ //$Title "AI-SpecialAction" 
+ game Doom
+ radius 8
+ height 8
+ RenderStyle Add
+ Alpha 0.0
+ -countkill
+ -SOLID
+ +NOBLOCKMAP
+ states
+ {
+ Spawn:
+  DOGE H 10 
+  Loop }
+}
+
+actor Aim 10701
+{
+ //$Category MonsterAI
+//$Title "Aim"
+ game Doom
+ radius 8
+ height 8
+ RenderStyle Add
+ Alpha 0.0
+ -countkill
+ -SOLID
+ +NOBLOCKMAP
+ states
+ {
+ Spawn:
+  DOGE J 10 
+  Loop }
+}
+
+actor DontMove 10703
+{
+ //$Category MonsterAI
+ //$Title "DontMove" 
+ game Doom
+ radius 8
+ height 8
+ RenderStyle Add
+ Alpha 0.0
+ -countkill
+ -SOLID
+ +NOBLOCKMAP
+ states
+ {
+ Spawn:
+  DOGE I 10 
+  Loop }
+}
+
+//------------------
+//-  Cover Check
+//------------------
+actor CoverChecker 10704
+{
+ //$Category MonsterAI
+ //$Title "CoverChecker"
+ game Doom
+ radius 8
+ height 8
+ RenderStyle Add
+ Alpha 0.1
+ -countkill
+ -SOLID
+ +NOBLOCKMAP
+ +LOOKALLAROUND
+ states
+ {
+ Spawn:
+  DOGE F 1 A_Look
+  DOGE F 1 A_SpawnItemEx("CoverNotAvail", 0, 0, 10, 0, 0, 0, 0, 0, 0)
+ Looking:
+  DOGE F 1
+  DOGE F 1 A_CheckProximity("Looking", "DoomPlayer",3000,1,CPXF_CHECKSIGHT | CPXF_SETTARGET)
+  Goto NotInShight
+ NotInShight:
+  DOGE G 1 A_SpawnItemEx("CoverAvail", 0, 0, 10, 0, 0, 0, 0, 0, 0)
+ Chill:
+  DOGE G 1
+  DOGE G 1 A_CheckProximity("Chill", "CoverAvail",30,1,CPXF_CHECKSIGHT)
+  Goto Spawn 
+  }
+}
+
+actor CoverAvail 10705
+{
+ //$Category MonsterAI
+//$Title "CoverAvailable"
+ game Doom
+ radius 8
+ height 8
+ RenderStyle Add
+ Alpha 0.9
+ -countkill
+ -SOLID
+ +NOBLOCKMAP
+ +LOOKALLAROUND
+ states
+ {
+ Spawn:
+  DOGE G 1 A_Look
+  DOGE G 1 A_CheckProximity("Byby", "DoomPlayer",3000,1,CPXF_CHECKSIGHT | CPXF_SETTARGET)
+  Goto Spawn
+ Byby:
+  DOGE G 1 A_Remove(AAPTR_DEFAULT)
+  Stop
+  }
+}
+
+actor CoverNotAvail 10707
+{
+ //$Category MonsterAI
+//$Title "CoverNotAvailable"
+ game Doom
+ radius 8
+ height 8
+ RenderStyle Add
+ Alpha 0.9
+ -countkill
+ -SOLID
+ +NOBLOCKMAP
+ +LOOKALLAROUND
+ states
+ {
+ Spawn:
+  DOGE F 1 A_Look
+  DOGE F 1 A_CheckProximity("IseeHim", "DoomPlayer",3000,1,CPXF_CHECKSIGHT | CPXF_SETTARGET)
+  DOGE G 1 A_Remove(AAPTR_DEFAULT)
+  Stop
+ IseeHim:
+  DOGE G 1 
+  DOGE F 1 A_CheckProximity("IseeHim", "DoomPlayer",3000,1,CPXF_CHECKSIGHT | CPXF_SETTARGET)
+  DOGE G 1 A_Remove(AAPTR_DEFAULT)
+  Stop
+  }
+}
+
+
+//-----------------
+// Alerted And Seeking
+//-----------------
+
+actor TargetSeeker 10708
+{
+ //$Category MonsterAI
+ //$Title "TargetSeeker"
+ game Doom
+ radius 20
+ height 56
+ RenderStyle Add
+ Alpha 1.0
+ -countkill
+ -SOLID
+ +NOBLOCKMAP
+ +LOOKALLAROUND
+ states
+ {
+ Spawn:
+  DOGE F 1 A_Look
+  DOGE F 1 A_SpawnItemEx("TargetNotAvail", 0, 0, 10, 0, 0, 0, 0, 0, 0)
+  DOGE F 1 A_CheckProximity("2ndLink", "TargetAvail",3000,1,CPXF_CHECKSIGHT)
+ Looking:
+  DOGE F 1 
+  DOGE F 1 A_CheckProximity("TargetInSightSpawn", "DoomPlayer",3000,1,CPXF_CHECKSIGHT | CPXF_SETTARGET)
+  DOGE F 1 A_CheckProximity("2ndLink", "TargetAvail",3000,1,CPXF_CHECKSIGHT)
+  DOGE F 1 A_CheckProximity("3rdLink", "2ndLink",3000,1,CPXF_CHECKSIGHT)
+  Goto Looking
+ TargetInSightSpawn:
+  DOGE G 0 A_SpawnItemEx("TargetAvail", 0, 0, 10, 0, 0, 0, 0, 0, 0)
+ TargetInSight:
+  DOGE G 1
+  DOGE G 1 A_CheckProximity("TargetInSight", "DoomPlayer",3000,1,CPXF_CHECKSIGHT | CPXF_SETTARGET)
+  Goto Spawn 
+ 2ndLink:
+  DOGE L 1 A_CheckProximity("Looking", "2ndLink",10,1,CPXF_CHECKSIGHT)//A_JumpIfCloser(50,"Looking")
+  DOGE L 1 A_SpawnItemEx("2ndLink", 0, 0, 10, 0, 0, 0, 0, 0, 0)
+  Goto Looking 
+ 3rdLink:
+  DOGE L 1 A_CheckProximity("Looking", "2ndLink",10,1,CPXF_CHECKSIGHT)
+  DOGE L 1 A_CheckProximity("Looking", "3rdLink",10,1,CPXF_CHECKSIGHT)
+  DOGE L 1 A_SpawnItemEx("3rdLink", 0, 0, 10, 0, 0, 0, 0, 0, 0)
+  Goto Looking 
+   }
+}
+
+actor 2ndLink 
+{
+//$Category MonsterAI
+//$Title "2ndLink"
+ game Doom
+ radius 20
+ height 56
+ RenderStyle Add
+ Alpha 1.0
+ -countkill
+ -SOLID
+ +NOBLOCKMAP
+ +LOOKALLAROUND
+ states
+ {
+ Spawn:
+  DOGE N 1 A_Look
+  DOGE N 0 A_CheckProximity("Byby", "DoomPlayer",3000,1,CPXF_CHECKSIGHT)
+  DOGE N 1 A_CheckProximity("Spawn", "TargetAvail",3000,1,CPXF_CHECKSIGHT)
+ Byby:
+  DOGE L 1 A_Remove(AAPTR_DEFAULT)
+  Stop
+  }
+}
+
+actor 3rdLink 
+{
+//$Category MonsterAI
+//$Title "2ndLink"
+ game Doom
+ radius 20
+ height 56
+ RenderStyle Add
+ Alpha 1.0
+ -countkill
+ -SOLID
+ +NOBLOCKMAP
+ +LOOKALLAROUND
+ states
+ {
+ Spawn:
+  DOGE M 1 A_Look
+  DOGE M 0 A_CheckProximity("Byby", "DoomPlayer",3000,1,CPXF_CHECKSIGHT)
+  DOGE M 1 A_CheckProximity("Spawn", "2ndLink",3000,1,CPXF_CHECKSIGHT)
+ Byby:
+  DOGE L 1 A_Remove(AAPTR_DEFAULT)
+  Stop
+  }
+}
+
+actor TargetAvail 10709
+{
+ //$Category MonsterAI
+//$Title "Target Available"
+ game Doom
+ radius 20
+ height 56
+ RenderStyle Add
+ Alpha 0.0
+ -countkill
+ -SOLID
+ +NOBLOCKMAP
+ +LOOKALLAROUND
+ states
+ {
+ Spawn:
+  DOGE G 1 A_Look
+  DOGE G 1 A_CheckProximity("Spawn", "DoomPlayer",3000,1,CPXF_CHECKSIGHT | CPXF_SETTARGET)
+ Byby:
+  DOGE F 1 A_Remove(AAPTR_DEFAULT)
+  Stop
+  }
+}
+
+actor TargetNotAvail 10710
+{
+ //$Category MonsterAI
+//$Title "Target Not Available"
+ game Doom
+ radius 8
+ height 8
+ RenderStyle Add
+ Alpha 0.0
+ -countkill
+ -SOLID
+ +NOBLOCKMAP
+ +LOOKALLAROUND
+ states
+ {
+ Spawn:
+  DOGE F 1 A_Look
+  DOGE F 1 A_CheckProximity("Byby", "DoomPlayer",3000,1,CPXF_CHECKSIGHT | CPXF_SETTARGET)
+  Goto Spawn
+ Byby:
+  DOGE G 1 A_Remove(AAPTR_DEFAULT)
+  Stop
+  }
+}
+
+
+//  DOGE F 1 A_CheckProximity("ISawHim", "DoomPlayer",3000,1,CPXF_CHECKSIGHT | CPXF_SETTARGET)
+//  DOGE F 1 A_CheckProximity("Byby", "SeekingActor2nd",3000,1,CPXF_CHECKSIGHT | CPXF_SETTARGET)
+//  DOGE F 1 A_CheckProximity("Byby", "SeekingActor3ed",3000,1,CPXF_CHECKSIGHT | CPXF_SETTARGET)
+//  DOGE F 1 A_CheckProximity("Byby", "SeekingActor4th",3000,1,CPXF_CHECKSIGHT | CPXF_SETTARGET)
+
+
+//--------------------------
+//-- Monster Pickup Stuff --
+//--------------------------
+actor MonsterHasPickedYou 10706
+{
+ game Doom
+ radius 20
+ height 20
+ RenderStyle Add
+ Alpha 0.3
+ -countkill
+ -SOLID
+ +NOBLOCKMAP
+ states
+ {
+ Spawn:
+  DOGE K 50
+ Byby:
+  DOGE G 1 A_Remove(AAPTR_DEFAULT)
+  Stop
+  }
+}
+
+actor MonsterHealer5
+{
+  game Doom
+  +ismonster
+  -countkill
+  -SOLID
+  +nogravity
+  +nodamagethrust
+  +noradiusdmg
+  PainChance 0
+  RenderStyle Add
+  Alpha 0.0
+  health 20
+  Radius 10
+  Height 10
+  States
+  {
+  Spawn:
+    RMBN A 1
+    RMBN A 1 A_DamageMaster(-5)
+	RMBN A 1
+	Stop
+  }
+}
+
+actor MonsterHealer20
+{
+  game Doom
+  +ismonster
+  -countkill
+  -SOLID
+  +nogravity
+  +nodamagethrust
+  +noradiusdmg
+  PainChance 0
+  RenderStyle Add
+  Alpha 0.0
+  health 20
+  Radius 10
+  Height 10
+  States
+  {
+  Spawn:
+    RMBN A 1
+    RMBN A 1 A_DamageMaster(-20)
+	RMBN A 1
+	Stop
+  }
+}
+
+actor MonsterHealer50
+{
+  game Doom
+  +ismonster
+  -countkill
+  -SOLID
+  +nogravity
+  +nodamagethrust
+  +noradiusdmg
+  PainChance 0
+  RenderStyle Add
+  Alpha 0.0
+  health 20
+  Radius 10
+  Height 10
+  States
+  {
+  Spawn:
+    RMBN A 1
+	RMBN A 1 A_DamageMaster(-50)
+	Stop
+  }
+}
+
+actor GoCollect 10711
+{
+ //$Category MonsterAI
+//$Title "GoCollect"
+ game Doom
+ radius 20
+ height 20
+ RenderStyle Add
+ Alpha 0.3
+ -countkill
+ -SOLID
+ +NOBLOCKMAP
+ states
+ {
+ Spawn:
+  DOGE K 50
+ Byby:
+  DOGE G 1 A_Remove(AAPTR_DEFAULT)
+  Stop
+  }
+}

@@ -1,0 +1,313 @@
+//===========================================================================
+//
+// Afrit
+//
+// by Nanami
+//
+//===========================================================================
+
+ACTOR Afrit 92
+{ 
+	//$Category "ZDoom Monster pack"
+   Health 800 
+   Speed 6
+   Radius 24
+   Height 72
+   PainChance 50
+   Mass 500
+   Meleedamage 10 
+   SeeSound "baron/sight"
+   PainSound "baron/pain"
+   DeathSound "baron/death"
+   ActiveSound "baron/active"
+   MeleeSound "baron/melee"
+   Missiletype "AfritBall"
+   MissileHeight 44
+   REACTIONTIME 8
+   MONSTER
+   +NORADIUSDMG
+   +NOGRAVITY
+   +NOBLOOD
+   +FLOATBOB
+   +FLOAT
+   Obituary "%o was scorched by an Afrit" 
+   HitObituary "%o found the Afrit too hot to handle." 
+   States 
+   { 
+   Spawn:
+      FRIT A 0
+      FRIT A 0 A_CustomMissile("OrbitComet", 44, 0, 0, 2, 0)
+      FRIT A 0 A_CustomMissile("OrbitComet2", 44, 0, 180, 2, 0)
+      FRIT ABCD 4 Bright A_Look
+      Goto Spawn+3
+   Idle:
+      FRIT ABCD 4 Bright A_Look
+      Loop
+    See:
+      FRIT AABBCCDD 2 Bright A_Chase
+      Loop
+   Melee:
+      FRIT S 0 A_Jump(64,4)
+      FRIT ST 6 Bright A_FaceTarget
+      FRIT U 6 Bright A_ComboAttack
+      Goto See +2
+      FRIT E 6 Bright A_FaceTarget
+      FRIT F 6 Bright A_CustomMissile("HellFire", 44, 0, 0)
+      FRIT G 6 Bright A_FaceTarget
+      Goto See +2
+   Missile:
+      FRIT S 0 A_Jump(64,8)
+      FRIT S 0 A_Jump(128,4)
+      FRIT ST 6 Bright A_FaceTarget
+      FRIT U 6 Bright A_ComboAttack
+      Goto See +2
+      FRIT EF 6 Bright A_FaceTarget
+      FRIT G 6 Bright A_CustomMissile("Comet", 44, 0, 0)
+      Goto See +2
+      FRIT E 6 Bright A_FaceTarget
+      FRIT F 6 Bright A_CustomMissile("HellFire", 44, 0, 0)
+      FRIT G 6 Bright A_FaceTarget
+      Goto See +2
+   Pain: 
+      FRIT HH 4 Bright A_Pain 
+      Goto See +2
+   Death: 
+      FRIT I 0 Bright A_NoGravity
+      FRIT I 6 Bright A_Scream
+      FRIT J 5 Bright A_NoBlocking
+      FRIT KLMNOPQR 4 Bright
+      Stop 
+   } 
+}
+
+//********************
+
+actor Comet
+{
+  Radius 6
+  Height 8
+  Speed 10
+  Damage 5
+  SpawnID 250
+  ExplosionDamage 40
+  ExplosionRadius 80
+  Scale .55
+  PROJECTILE
+  SeeSound "comet/launch"
+  DeathSound "comet/explosion"
+  Decal Scorch
+  States
+  {
+  Spawn:
+    COMT AAAABBBBCCCC 1 Bright A_SpawnItemEx("CometTail", 0, 0, 0, 0, 0, 0, 0, 128)
+    Loop
+  Death:
+    COMT D 3 Bright A_SpawnItemEx("CometDeathGlow", 0, 0, 0, 0, 0, 0, 0, 128)
+    COMT E 3 Bright A_Explode
+    COMT E 0 A_SpawnItemEx("CometDeath", 0, 0, 0, 0, 0, 0, 0, 128)
+    Stop
+  }
+}
+
+//********************
+
+actor CometTail
+{
+    PROJECTILE
+    RENDERSTYLE ADD
+    +NOCLIP
+    ALPHA 0.4
+    States
+    {
+    Spawn:
+        FRTB ABCDEFGHI 1 Bright
+        Stop
+    }
+}
+
+//********************
+
+actor CometDeath
+{
+    PROJECTILE
+    RENDERSTYLE ADD
+    +NOCLIP
+    ALPHA 0.7
+    States
+    {
+    Spawn:
+        COMT FGHI 3 Bright
+        Stop
+    }
+}
+
+//********************
+
+actor CometDeathGlow : CometTail
+{
+    Scale 2.0
+    Alpha 0.6
+    States
+    {
+    Spawn:
+        FRTB ABCDEFGHI 3 Bright
+        Stop
+    }
+}
+
+//********************
+
+actor OrbitCometTail : CometTail
+{
+    Scale .5
+}
+
+//********************
+
+actor OrbitComet : Comet
+{
+  SeeSound ""
+  +NOCLIP
+  Scale .28
+  Speed 5
+  States
+  {
+  Spawn:
+    COMT AABBCC 1 Bright A_SpawnItemEx("OrbitCometTail", 0, 0, 0, 0, 0, 0, 0, 128)
+    COMT A 0 A_CustomMissile("OrbitComet", 0, 0, 75)
+    COMT A 0 A_SpawnItemEx("OrbitCometTail", 0, 0, 0, 0, 0, 0, 0, 128)
+    Stop
+  }
+}
+
+//********************
+
+actor OrbitComet2 : OrbitComet
+{
+  States
+  {
+  Spawn:
+    COMT AABBCC 1 Bright A_SpawnItemEx("OrbitCometTail", 0, 0, 0, 0, 0, 0, 0, 128)
+    COMT A 0 A_CustomMissile("OrbitComet2", 0, 0, -75)
+    COMT A 0 A_SpawnItemEx("OrbitCometTail", 0, 0, 0, 0, 0, 0, 0, 128)
+    Stop
+  }
+}
+
+//********************
+
+actor AfritBall
+{
+    Radius 6
+    Height 8
+    Speed 15
+    Damage 8
+    PROJECTILE
+    RENDERSTYLE ADD
+    ALPHA 0.8
+    SeeSound "imp/attack"
+    DeathSound "imp/shotx"
+    States
+    {
+    Spawn:
+        FRTM AB 5 Bright
+        Loop
+    Death:
+        FRTM CDE 6 Bright
+        Stop
+    }
+}
+
+
+//********************
+
+ACTOR HellFire2
+{
+     +NOCLIP
+     +MISSILE
+     +DROPOFF
+     +RANDOMIZE
+     Scale 1.5
+     Speed 0
+     Damage 2
+     RENDERSTYLE ADD
+     ALPHA 0.67
+     ExplosionDamage 3
+     ExplosionRadius 32
+     DeathSound "dragonfam/attack"
+     States
+     {
+     Spawn:
+          NULL A 8
+          FRTF ABC 3 Bright A_Explode
+          FRTF C 0
+          FRTF C 0 A_Jump(191,4)
+          FRTF C 0 A_CustomMissile("HellFire2", 0, 24, 0)
+          FRTF C 0 A_CustomMissile("HellFire2", 0, 0, 0)
+          FRTF C 0 A_CustomMissile("HellFire2", 0, -24, 0)
+          FRTF DEFGHIJKLMNO 3 Bright
+          Stop
+     }
+} 
+
+//********************
+
+ACTOR HellFire1
+{
+     +NOCLIP
+     +MISSILE
+     +DROPOFF
+     Speed 2
+     Damage 2
+     States
+     {
+     Spawn:
+          NULL A 10 A_CustomMissile("HellFire2", 0, 0, 0)
+          NULL A 10 A_CustomMissile("HellFire2", 0, 16, 0)
+          NULL A 10 A_CustomMissile("HellFire2", 0, -16, 0)
+          NULL A 10 A_CustomMissile("HellFire2", 0, 0, 0)
+          NULL A 10 A_CustomMissile("HellFire2", 0, 16, 0)
+          NULL A 10 A_CustomMissile("HellFire2", 0, -16, 0)
+          NULL A 10 A_CustomMissile("HellFire2", 0, 0, 0)
+          NULL A 10 A_CustomMissile("HellFire2", 0, 16, 0)
+          NULL A 10 A_CustomMissile("HellFire2", 0, -16, 0)
+          NULL A 10 A_CustomMissile("HellFire2", 0, 0, 0)
+          NULL A 10 A_CustomMissile("HellFire2", 0, 16, 0)
+          NULL A 10 A_CustomMissile("HellFire2", 0, -16, 0)
+          NULL A 10 A_CustomMissile("HellFire2", 0, 0, 0)
+          NULL A 10 A_CustomMissile("HellFire2", 0, 16, 0)
+          NULL A 10 A_CustomMissile("HellFire2", 0, -16, 0)
+          Stop
+     }
+}
+
+//********************
+
+ACTOR HellFire
+{
+     +NOBLOCKMAP
+     +MISSILE
+     +DROPOFF
+     Speed 5
+     Damage 2
+     DeathSound "dragonfam/attack"
+     States
+     {
+     Spawn:
+          NULL A 1
+          Loop
+     Death:
+          NULL A 0 Bright A_CustomMissile("HellFire1", 0, 0, -180)
+          NULL A 0 Bright A_CustomMissile("HellFire1", 0, 16, -175)
+          NULL A 0 Bright A_CustomMissile("HellFire1", 0, 32, -170)
+          NULL A 0 Bright A_CustomMissile("HellFire1", 0, -16, -185)
+          NULL A 0 Bright A_CustomMissile("HellFire1", 0, -32, -190)
+          Stop
+     }
+}
+
+//===========================================================================
+//
+// End of Afrit
+//
+//===========================================================================

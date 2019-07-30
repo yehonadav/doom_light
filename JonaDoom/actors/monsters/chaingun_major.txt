@@ -1,0 +1,46 @@
+Actor ChaingunMajor : ChaingunGuy 3311
+{
+	//$Category JonaDoom_Monsters
+  Health 180
+  Painchance 40
+  Mass 5000
+  Obituary "%o was perforated by the chaingun major."
+  Decal Bulletchip
+  States
+  {
+  Spawn:
+    CPS2 AB 10 A_Look
+    Loop
+  See:
+    CPS2 AABBCCDD 3 A_Chase
+    Loop
+  Missile:
+    CPS2 E 10 A_FaceTarget
+    CPS2 FE 3 A_CPosAttack
+    CPS2 F 1 A_CPosRefire
+    Goto Missile+1
+  Pain:
+    CPS2 G 3
+    CPS2 G 3 A_Pain
+    Goto See
+  Death:
+    CPS2 H 5
+    CPS2 I 5 A_Scream
+    CPS2 J 5 A_Fall
+    CPS2 KLMNO 5
+    CPS2 P -1 A_BossDeath
+    Stop
+  XDeath:
+    CPS2 Q 5
+    CPS2 R 5 A_XScream
+    CPS2 S 5 A_Fall
+    CPS2 TUVW 5
+    CPS2 X -1
+    Stop
+  Raise:
+    CPS2 P 5
+    CPS2 ONMLKJIH 5
+    Goto See
+  }
+}
+

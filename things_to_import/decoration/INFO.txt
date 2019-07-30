@@ -1,0 +1,16 @@
+[INFO]
+Name: Impaled Scientists
+Connection: No
+Palette: Custom
+Summon: ImpaledScientist, ImpaledFScientist
+Ambient Sound: No
+De-/Activatable: No
+Destroyable: No
+Special Effects: No
+
+[CREDITS]
+Submitted: scalliano
+Decorate: scalliano
+Sprites: scalliano
+Idea Base: The impaled humans from Doom.
+

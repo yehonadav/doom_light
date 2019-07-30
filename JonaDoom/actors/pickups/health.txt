@@ -1,0 +1,37 @@
+//-----------------
+//4X Heads Secret
+//-----------------
+actor 4HeadsSecret 3217
+{
+  //$Category Health and Armor
+  //$Title "4SkullsSoulSphere"
+  game Doom
+ scale 0.75
+ radius 20
+ height 20
+ +NOBLOCKMAP
+ +NOGravity
+ states
+ {
+  Spawn:
+     SOUL E 5 Bright A_CheckProximity("One", "ZombieSkull",1500,1)
+     SOUL E 5 Bright
+     Loop
+  One:
+     SOUL F 5 Bright A_CheckProximity("Tow", "ZombieSkull",1500,2)
+     SOUL F 5 Bright
+     Loop
+  Tow:
+     SOUL G 5 Bright A_CheckProximity("Three", "ZombieSkull",1500,3)
+     SOUL G 5 Bright
+     Loop
+  Three:
+     SOUL H 5 Bright A_CheckProximity("Die", "ZombieSkull",1500,4)
+     SOUL H 5 Bright
+     Loop
+  Die:
+     FRPP I 1 A_SpawnItemEx("Soulsphere",0,0,0,0,0,0,0,0)
+	 FRPP I 50
+	 Stop
+ }
+}

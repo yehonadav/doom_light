@@ -1,0 +1,53 @@
+actor CGunSpider 12456
+{
+	//$Category JonaDoom_Monsters
+  obituary "%o was filled full of lead by an Arachnotron."
+  health 450
+  radius 64
+  height 64
+  mass 600
+  speed 12
+  painchance 128
+  seesound "CGunSpider/Sight"
+  painsound "baby/pain"
+  deathsound "CGunSpider/Death"
+  activesound "baby/active"
+  attacksound "CGunSpider/Attack"
+  dropitem "ClipBox" 64
+  decal "bulletchip"
+  MONSTER
+  +FLOORCLIP
+  states
+  {
+  Spawn:
+    CSPI AB 10 A_Look
+    loop
+  See:
+    CSPI A 20
+    CSPI A 3 A_BabyMetal
+    CSPI ABBCC 3 A_Chase
+    CSPI D 3 A_BabyMetal
+    CSPI DEEFF 3 A_Chase
+    goto See+1
+  Missile:
+    CSPI A 20 bright A_FaceTarget
+    CSPI G 4 bright A_CPosAttack
+    CSPI G 0 bright A_CPosAttack
+    CSPI H 4 bright
+    CSPI H 1 bright A_SpidRefire
+    goto Missile+1
+  Pain:
+    CSPI I 3
+    CSPI I 3 A_Pain
+    goto See+1
+  Death:
+    CSPI J 20 A_Scream
+    CSPI K 7 A_NoBlocking
+    CSPI LMNO 7
+    CSPI P -1 A_BossDeath
+    stop
+  Raise:
+    CSPI PONMLKJ 5
+    goto See+1
+  }
+}

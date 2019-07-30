@@ -1,0 +1,470 @@
+actor BlackOpsMale 30141
+{
+	//$Category JonaDoom_Monsters
+  obituary "%o was Silenced by a BlackOps!"
+  health 80
+  radius 20
+  height 56
+  mass 200
+  speed 9
+  painchance 200
+  decal bulletchip
+  attacksound "BlackOpsM/Attack"
+  seesound    "BlackOpsM/Sight"
+  painsound   "BlackOpsM/Pain"
+  deathsound  "BlackOpsM/Death"
+  activesound "BlackOpsM/Active"
+  dropitem "Clip" 256
+  dropitem "Shell" 256
+  MONSTER
+  +AMBUSH
+  +NOBLOOD
+  +FLOORCLIP
+  +MISSILEMORE
+  +QUICKTORETALIATE
+  +DONTHURTSPECIES
+  +NOINFIGHTING
+  +DONTHARMSPECIES
+  Species BlackOpsHuman
+  DontHurtShooter
+  PainChance "Fire", 255
+  PainChance "BlackOpsDamageType", 0
+  DamageType BlackOpsDamageType
+  GibHealth 30
+  states
+  {
+  Spawn:
+    REEL E 1 A_Look
+   loop
+  See:
+    REEL E 0 A_TakeInventory("BlackOpsAmmo")
+    REEL A 0 A_TakeInventory("BlackOpsCharge", 1)
+    REEL A 0 A_GiveInventory("BlackOpsCharge", 1)
+    REEL A 0 A_CheckSight(15)
+    REEL A 0 A_JumpIfHealthLower(30, 4)
+    REEL A 0 A_JumpIfInventory("BlackOpsCharge", 1, 13)
+    REEL AABBCCDD 2 A_Chase
+   Goto See
+    REEL A 0 A_Jump(32, 1)
+    REEL A 0 A_ChangeFlag("Frightened", 1)
+    REEL A 0
+   Goto See+4
+    REEL A 0 A_TakeInventory("BlackOpsCharge", 1)
+   Goto See+3
+    REEL A 0 A_Jump(128, 1)
+   Goto See+5
+    REEL AAABBBCCCDDD 2 A_Chase
+   Goto See
+  Missile:
+    REEL E 0 A_JumpIfCloser (325, "Missile2")
+  Missile1:
+    REEL E 5 A_FaceTarget
+    REEL E 0 A_JumpIfInventory("BlackOpsAmmo", 10, 16)
+    REEL F 0 bright A_PlaySound("BlackOps/Attack")
+    REEL E 0 A_FaceTarget
+    REEL F 2 bright A_CustomBulletAttack(3,3,1,1,BulletPuff)
+    REEL E 2
+    REEL F 0 bright A_PlaySound("BlackOps/Attack")
+    REEL E 0 A_FaceTarget
+    REEL F 2 bright A_CustomBulletAttack(3,3,1,1,BulletPuff)
+    REEL E 2
+    REEL F 0 bright A_PlaySound("BlackOps/Attack")
+    REEL E 0 A_FaceTarget
+    REEL F 2 bright A_CustomBulletAttack(3,3,1,1,BulletPuff)
+    REEL E 2
+    REEL E 0 A_GiveInventory("BlackOpsAmmo", 1)
+    REEL E 0 A_CPosRefire
+   Goto Missile1
+    REEL E 14 A_FaceTarget
+    REEL F 0 bright A_PlaySound("weapons/rocklf")
+    REEL F 2 bright A_CustomMissile("BlackOpsGrenade", 28, 5, 0)
+    REEL E 0 A_TakeInventory("BlackOpsAmmo")
+    REEL E 6 A_FaceTarget
+   Goto See
+  Missile2:
+    REEL E 10 A_FaceTarget
+    REEL E 0 A_JumpIfInventory("BlackOpsAmmo", 4, 6)
+    REEL F 0 bright A_PlaySound("BlackOps/Attack2")
+    REEL F 3 bright A_CustomBulletAttack(5,5,5,2,BulletPuff)
+    REEL E 2 A_FaceTarget
+    REEL E 0 A_GiveInventory("BlackOpsAmmo", 1)
+    REEL E 0 A_CPosRefire
+   Goto Missile
+    REEL E 0
+   Goto See
+  Pain:
+    REEL G 3
+    REEL G 3 A_Pain
+   goto See
+  Death:
+    REED A 5
+    REED B 5 A_Scream
+    REED C 5 A_NoBlocking
+    REED DEF 5
+    REED G -1
+   stop
+  XDeath:
+    REED H 5 A_Scream
+    REED K 0 Bright A_SpawnItemEx("BlackOpsGib1", 1, 0, 9, 1, 0, 0, -130, 128)
+    REED K 0 Bright A_SpawnItemEx("BlackOpsGib2", 6, 0, 7, 8, 0, 0, -90, 128)
+    REED K 0 Bright A_SpawnItemEx("BlackOpsGib3", 5, 0, 6, 3, 0, 0, -80, 128)
+    REED K 0 Bright A_SpawnItemEx("BlackOpsGib4", 1, 0, 9, 1, 0, 0,  130, 128)
+    REED K 0 Bright A_SpawnItemEx("BlackOpsGib5", 6, 0, 7, 8, 0, 0,  90, 128)
+    REED K 0 Bright A_SpawnItemEx("BlackOpsGib6", 5, 0, 6, 3, 0, 0,  80, 128)
+    REED I 5
+    REED J 5 A_NoBlocking
+    REED L 5
+    REED M 5
+    REED N -1
+   stop
+  Death.Fire:
+    REEB A 3 A_PlaySound("BlackOpsM/Burn")
+    REEB B 3 A_CustomMissile("SpawnFire", 0, 0, 0)
+    REEB C 3 A_NoBlocking
+    REEB D 3 A_CustomMissile("SpawnFire", 0, 0, 0)
+    REEB E 3
+    REEB F 3 A_CustomMissile("SpawnFire", 0, 0, 0)
+    REEB G 3
+    REEB H 3 A_CustomMissile("SpawnFire", 0, 0, 0)
+    REEB I 3
+    REEB J 3 A_CustomMissile("SpawnFire", 0, 0, 0)
+    REEB K 3
+    REEB L 3 A_CustomMissile("SpawnFire", 0, 0, 0)
+    REEB M 3
+    REEB N 3 A_CustomMissile("SpawnFire", 0, 0, 0)
+    REEB O 3
+    REEB P 3 A_CustomMissile("SpawnFire", 0, 0, 0)
+    REEB Q 3
+    REEB R 3 A_CustomMissile("SpawnFire", 0, 0, 0)
+    REEB S 3
+    REEB T 3 A_CustomMissile("SpawnFire", 0, 0, 0)
+    REEB W 3
+    REEB V -1
+   stop
+  Raise:
+    REED GFEDCBA 3
+   goto See
+  }
+}
+
+actor BlackOpsFemale : Shotgunguy 30142
+{
+	//$Category JonaDoom_Monsters
+  obituary "%o was Silenced by a BlackOps!"
+  health 80
+  radius 20
+  height 56
+  mass 200
+  speed 9
+  painchance 200
+  decal bulletchip
+  attacksound "BlackOpsF/Attack"
+  seesound    "BlackOpsF/Sight"
+  painsound   "BlackOpsF/Pain"
+  deathsound  "BlackOpsF/Death"
+  activesound "BlackOpsF/Active"
+  dropitem "Clip" 256
+  dropitem "Shell" 256
+  MONSTER
+  +AMBUSH
+  +NOBLOOD
+  +FLOORCLIP
+  +MISSILEMORE
+  +QUICKTORETALIATE
+  +DONTHURTSPECIES
+  +NOINFIGHTING
+  +DONTHARMSPECIES
+  Species BlackOpsHuman
+  DontHurtShooter
+  PainChance "Fire", 255
+  PainChance "BlackOpsDamageType", 0
+  DamageType BlackOpsDamageType
+  GibHealth 30
+  states
+  {
+  Spawn:
+    REEL E 1 A_Look
+   loop
+  See:
+    REEL E 0 A_TakeInventory("BlackOpsAmmo")
+    REEL A 0 A_TakeInventory("BlackOpsCharge", 1)
+    REEL A 0 A_GiveInventory("BlackOpsCharge", 1)
+    REEL A 0 A_CheckSight(15)
+    REEL A 0 A_JumpIfHealthLower(30, 4)
+    REEL A 0 A_JumpIfInventory("BlackOpsCharge", 1, 13)
+    REEL AABBCCDD 2 A_Chase
+   Goto See
+    REEL A 0 A_Jump(32, 1)
+    REEL A 0 A_ChangeFlag("Frightened", 1)
+    REEL A 0
+   Goto See+4
+    REEL A 0 A_TakeInventory("BlackOpsCharge", 1)
+   Goto See+3
+    REEL A 0 A_Jump(128, 1)
+   Goto See+5
+    REEL AAABBBCCCDDD 2 A_Chase
+   Goto See
+  Missile:
+    REEL E 0 A_JumpIfCloser (325, "Missile2")
+  Missile1:
+    REEL E 5 A_FaceTarget
+    REEL E 0 A_JumpIfInventory("BlackOpsAmmo", 10, 16)
+    REEL F 0 bright A_PlaySound("BlackOps/Attack")
+    REEL E 0 A_FaceTarget
+    REEL F 2 bright A_CustomBulletAttack(3,3,1,1,BulletPuff)
+    REEL E 2
+    REEL F 0 bright A_PlaySound("BlackOps/Attack")
+    REEL E 0 A_FaceTarget
+    REEL F 2 bright A_CustomBulletAttack(3,3,1,1,BulletPuff)
+    REEL E 2
+    REEL F 0 bright A_PlaySound("BlackOps/Attack")
+    REEL E 0 A_FaceTarget
+    REEL F 2 bright A_CustomBulletAttack(3,3,1,1,BulletPuff)
+    REEL E 2
+    REEL E 0 A_GiveInventory("BlackOpsAmmo", 1)
+    REEL E 0 A_CPosRefire
+   Goto Missile1
+    REEL E 14 A_FaceTarget
+    REEL F 0 bright A_PlaySound("weapons/rocklf")
+    REEL F 2 bright A_CustomMissile("BlackOpsGrenade", 28, 5, 0)
+    REEL E 0 A_TakeInventory("BlackOpsAmmo")
+    REEL E 6 A_FaceTarget
+   Goto See
+  Missile2:
+    REEL E 10 A_FaceTarget
+    REEL E 0 A_JumpIfInventory("BlackOpsAmmo", 4, 6)
+    REEL F 0 bright A_PlaySound("BlackOps/Attack2")
+    REEL F 3 bright A_CustomBulletAttack(5,5,5,2,BulletPuff)
+    REEL E 2 A_FaceTarget
+    REEL E 0 A_GiveInventory("BlackOpsAmmo", 1)
+    REEL E 0 A_CPosRefire
+   Goto Missile
+    REEL E 0
+   Goto See
+  Pain:
+    REEL G 3
+    REEL G 3 A_Pain
+   goto See
+  Death:
+    REED A 5
+    REED B 5 A_Scream
+    REED C 5 A_NoBlocking
+    REED DEF 5
+    REED G -1
+   stop
+  XDeath:
+    REED H 5 A_Scream
+    REED K 0 Bright A_SpawnItemEx("BlackOpsGib1", 1, 0, 9, 1, 0, 0, -130, 128)
+    REED K 0 Bright A_SpawnItemEx("BlackOpsGib2", 6, 0, 7, 8, 0, 0, -90, 128)
+    REED K 0 Bright A_SpawnItemEx("BlackOpsGib3", 5, 0, 6, 3, 0, 0, -80, 128)
+    REED K 0 Bright A_SpawnItemEx("BlackOpsGib4", 1, 0, 9, 1, 0, 0,  130, 128)
+    REED K 0 Bright A_SpawnItemEx("BlackOpsGib5", 6, 0, 7, 8, 0, 0,  90, 128)
+    REED K 0 Bright A_SpawnItemEx("BlackOpsGib6", 5, 0, 6, 3, 0, 0,  80, 128)
+    REED I 5
+    REED J 5 A_NoBlocking
+    REED L 5
+    REED M 5
+    REED N -1
+   stop
+  Death.Fire:
+    REEB A 3 A_PlaySound("BlackOpsF/Burn")
+    REEB B 3 A_CustomMissile("SpawnFire", 0, 0, 0)
+    REEB C 3 A_NoBlocking
+    REEB D 3 A_CustomMissile("SpawnFire", 0, 0, 0)
+    REEB E 3
+    REEB F 3 A_CustomMissile("SpawnFire", 0, 0, 0)
+    REEB G 3
+    REEB H 3 A_CustomMissile("SpawnFire", 0, 0, 0)
+    REEB I 3
+    REEB J 3 A_CustomMissile("SpawnFire", 0, 0, 0)
+    REEB K 3
+    REEB L 3 A_CustomMissile("SpawnFire", 0, 0, 0)
+    REEB M 3
+    REEB N 3 A_CustomMissile("SpawnFire", 0, 0, 0)
+    REEB O 3
+    REEB P 3 A_CustomMissile("SpawnFire", 0, 0, 0)
+    REEB Q 3
+    REEB R 3 A_CustomMissile("SpawnFire", 0, 0, 0)
+    REEB S 3
+    REEB T 3 A_CustomMissile("SpawnFire", 0, 0, 0)
+    REEB W 3
+    REEB V -1
+   stop
+  Raise:
+    REED GFEDCBA 3
+   goto See
+  }
+}
+
+actor BlackOpsRandomSpawner : RandomSpawner
+{
+    DropItem "BlackOpsMale"
+    DropItem "BlackOpsFemale"
+}
+
+actor BlackOpsAmmo : inventory
+{
+  Inventory.MaxAmount "10"
+}
+
+actor BlackOpsCharge : inventory
+{
+  Inventory.MaxAmount "1"
+}
+
+Actor BlackOpsGrenade
+{
+  obituary "%o ate a BlackOps's grenade."
+  radius 6
+  height 8
+  speed 30
+  damage 10
+  seesound "ZSec/bounce"
+  PROJECTILE
+  +HEXENBOUNCE
+  -NOGRAVITY
+  +GRENADETRAIL
+  +DONTFALL
+  DontHurtShooter
+  bouncefactor 0.5
+  DontHurtShooter
+  bouncecount 10
+  states
+  {
+  Spawn:
+    REEG AAA 35 bright
+  Death:
+    MISL C 0 bright A_PlaySound("weapons/rocklx")
+    MISL C 0 bright A_ChangeFlag(NoGravity, 1)
+    MISL C 5 bright A_Explode(40,128,1)
+    MISL D 4 bright
+    MISL E 3 bright
+   stop
+  }
+}
+
+ACTOR BlackOpsGib1
+{
+    Radius 6
+    Height 8
+    Speed 10
+    Mass 8000
+    +DOOMBOUNCE
+    +DROPOFF
+    +Missile
+    scale 1
+    States
+    {
+    Spawn:
+    	REEM B 2
+       loop
+    Death:
+    	REEM B -1
+       loop
+    }
+}
+
+actor BlackOpsGib2
+{
+    Radius 6
+    Height 8
+    Speed 10
+    Mass 8000
+    +DOOMBOUNCE
+    +DROPOFF
+    +Missile
+    scale 1
+    States
+    {
+    Spawn:
+    	REEM C 2
+       loop
+    Death:
+    	REEM C -1
+       loop
+    }
+}
+
+actor BlackOpsGib3
+{
+    Radius 6
+    Height 8
+    Speed 10
+    Mass 8000
+    +DOOMBOUNCE
+    +DROPOFF
+    +Missile
+    scale 1
+    States
+    {
+    Spawn:
+    	REEM D 2
+       loop
+    Death:
+    	REEM D -1
+       loop
+    }
+}
+
+actor BlackOpsGib4
+{
+    Radius 6
+    Height 8
+    Speed 10
+    Mass 8000
+    +DOOMBOUNCE
+    +DROPOFF
+    +Missile
+    scale 1
+    States
+    {
+    Spawn:
+    	REEM A 2
+       loop
+    Death:
+    	REEM A -1
+       loop
+    }
+}
+
+actor BlackOpsGib5
+{
+    Radius 6
+    Height 8
+    Speed 10
+    Mass 8000
+    +DOOMBOUNCE
+    +DROPOFF
+    +Missile
+    scale 1
+    States
+    {
+    Spawn:
+    	REEM G 2
+       loop
+    Death:
+    	REEM G -1
+       loop
+    }
+}
+
+actor BlackOpsGib6
+{
+    Radius 6
+    Height 8
+    Speed 10
+    Mass 8000
+    +DOOMBOUNCE
+    +DROPOFF
+    +Missile
+    scale 1
+    States
+    {
+    Spawn:
+    	REEM F 2
+       loop
+    Death:
+    	REEM F -1
+       loop
+    }
+}

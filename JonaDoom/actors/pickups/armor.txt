@@ -1,0 +1,57 @@
+actor ArmorShard : ArmorBonus 14213
+{
+  //$Category Health and Armor
+    Inventory.Pickupmessage "(+5 Armor)"
+	Inventory.Icon "ARSDA0"
+	Inventory.PickupSound "pickup/armorshard"
+	Armor.Saveamount 5
+	States
+	{
+	Spawn:
+		ARSD ABCDCB 6 A_CheckProximity("Byby", "MonsterHasPickedYou", 50, 1, CPXF_CLOSEST)
+		loop
+	Byby:
+		ARSD A 0 A_Remove(AAPTR_DEFAULT)
+		Stop
+	}
+}
+
+ACTOR ArmorHelmet : ArmorBonus 14215
+{
+  //$Category Health and Armor
+    Inventory.Pickupmessage "Helmet (+30 Armor)."
+	Inventory.Icon "BON2A0"
+	Inventory.PickupSound "pickup/armorshard"
+	Armor.Saveamount 30
+	States
+	{
+	Spawn:
+    	BON2 ABCDCB 6 A_CheckProximity("Byby", "MonsterHasPickedYou", 50, 1, CPXF_CLOSEST)
+    	Loop
+	Byby:
+		BON2 A 0 A_Remove(AAPTR_DEFAULT)
+		Stop
+	}
+}
+
+ACTOR SalvagedArmorBonus : BasicArmorBonus
+{
+  Radius 20
+  Height 16
+  Inventory.PickupMessage "(+2 Armor)"
+  Inventory.Icon "ARM1A0"
+  Armor.SavePercent 33.335
+  Armor.SaveAmount 2
+  Armor.MaxSaveAmount 200
+  +INVENTORY.ALWAYSPICKUP
+  States
+  {
+  Spawn:
+    RMBN A 20 A_CheckProximity("Byby", "MonsterHasPickedYou", 50, 1, CPXF_CLOSEST)
+	RMBN BBCCCCCBCCCBCBCCBCCCCBCCCCBB 2 A_CheckProximity("Byby", "MonsterHasPickedYou", 50, 1, CPXF_CLOSEST)
+    Loop
+  Byby:
+	RMBN A 0 A_Remove(AAPTR_DEFAULT)
+	Stop
+	}
+}

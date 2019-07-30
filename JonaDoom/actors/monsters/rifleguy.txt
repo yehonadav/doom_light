@@ -1,0 +1,336 @@
+ACTOR RifleGuy 20123
+{
+  //$Category JonaDoom_Monsters
+  //$Title "Z-3-RifleGuy"
+  Health 90
+  Radius 20
+  Height 49
+  Mass 100
+  Speed 8
+  PainChance 64
+  Monster
+  +FLOORCLIP
+  +SLIDESONWALLS
+  SeeSound "shotguy/sight"
+  PainSound "shotguy/pain"
+  Attacksound "RIFLZOM1"
+  DeathSound "shotguy/death"
+  ActiveSound "shotguy/active"
+  Decal "bulletchip"
+  Obituary "Too bad."
+  States
+  {
+	Spawn:
+		RFLG A 0 A_SpawnItemEx("ZRifleHeadBox10", 8,0, 47,0,0,0,0,0)
+		RFLG A 5 A_Look
+		RFLG A 0 A_SpawnItemEx("ZRifleHeadBox10", 8,0, 47,0,0,0,0,0)
+		RFLG B 5 A_Look
+		Loop
+	TakeArmorShard:
+		RFLG A 1 A_SpawnItemEx("MonsterHasPickedYou", 0, 0, 0, 0, 0, 0, 0, 0)
+		RFLG A 0 A_SpawnItemEx("MonsterHealer20", 0, 0, 0, 0, 0, 0, 0, 0)
+		Goto SeeChase
+	TakeArmorHelmet:
+		RFLG A 1 A_SpawnItemEx("MonsterHasPickedYou", 0, 0, 0, 0, 0, 0, 0, 0)
+		RFLG A 0 A_SpawnItemEx("MonsterHealer50", 0, 0, 0, 0, 0, 0, 0, 0)
+		Goto SeeChase
+	TakeSalvagedArmorBonus:
+		RFLG A 1 A_SpawnItemEx("MonsterHasPickedYou", 0, 0, 0, 0, 0, 0, 0, 0)
+		RFLG A 0 A_SpawnItemEx("MonsterHealer5", 0, 0, 0, 0, 0, 0, 0, 0)
+		Goto SeeChase
+	See:
+    	RFLG A 0 A_CheckLOF( "StandGuard", CLOFF_IGNOREGHOST|CLOFF_JUMPOBJECT, 300 )
+    	RFLG A 0 A_SpawnItemEx("ZRifleHeadBox6", 8,0, 47,0,0,0,0,0)
+		RFLG A 0 A_CheckProximity("TakeArmorShard", "ArmorShard",50,1)
+		RFLG A 0 A_CheckProximity("TakeArmorHelmet", "ArmorHelmet",50,1)
+		RFLG A 0 A_CheckProximity("TakeSalvagedArmorBonus", "SalvagedArmorBonus",50,1)
+	SeeChase:
+		RFLG AA 3 A_Chase
+		RFLG A 0 A_SpawnItemEx("ZRifleHeadBox6", 8,0, 47,0,0,0,0,0)
+		RFLG A 0 A_CheckProximity("TakeArmorShard", "ArmorShard",50,1)
+		RFLG A 0 A_CheckProximity("TakeArmorHelmet", "ArmorHelmet",50,1)
+		RFLG A 0 A_CheckProximity("TakeSalvagedArmorBonus", "SalvagedArmorBonus",50,1)
+		RFLG BB 3 A_Chase
+		RFLG A 0 A_SpawnItemEx("ZRifleHeadBox6", 8,0, 47,0,0,0,0,0)
+		RFLG A 0 A_CheckProximity("TakeArmorShard", "ArmorShard",50,1)
+		RFLG A 0 A_CheckProximity("TakeArmorHelmet", "ArmorHelmet",50,1)
+		RFLG A 0 A_CheckProximity("TakeSalvagedArmorBonus", "SalvagedArmorBonus",50,1)
+		RFLG CC 3 A_Chase
+		RFLG A 0 A_SpawnItemEx("ZRifleHeadBox6", 8,0, 47,0,0,0,0,0)
+		RFLG A 0 A_CheckProximity("TakeArmorShard", "ArmorShard",50,1)
+		RFLG A 0 A_CheckProximity("TakeArmorHelmet", "ArmorHelmet",50,1)
+		RFLG A 0 A_CheckProximity("TakeSalvagedArmorBonus", "SalvagedArmorBonus",50,1)
+		RFLG DD 3 A_Chase
+		RFLG A 0 A_JumpIfCloser(200,"SeeOrSeekChance")
+		RFLG A 0 A_CheckProximity("See", "DoomPlayer",3000,1,CPXF_CHECKSIGHT)
+	MaySeek:
+		RFLG A 0 A_CheckProximity("Seek", "TargetSeeker",2000,1,CPXF_CHECKSIGHT)
+		Goto See
+	SeeOrSeekChance:
+		RFLG A 0 A_Jump(200,"MaySeek")
+		Goto See
+	Missile:
+		RFLG A 0 A_SpawnItemEx("ZRifleHeadBox10", 8,0, 47,0,0,0,0,0)
+		RFLG E 10 A_FaceTarget
+		TNT1 A 0 A_CheckLOF( "LineClear", CLOFF_IGNOREGHOST|CLOFF_JUMPOBJECT, 3000 )
+		Goto See
+	LineClear:
+        RFLG A 0 A_SpawnItemEx("ZRifleHeadBox10", 0,0, 46,0,0,0,0,0)
+		RFLG F 8 Bright A_CustomBulletAttack(10,4,1,random(3,6)* 3,"BulletPuff",0,CBAF_NORANDOM)
+        RFLG E 10
+		Goto See
+	StandGuard:
+		RFLG A 1 A_CheckLOF( "StepAwayCheck", CLOFF_IGNOREGHOST|CLOFF_JUMPOBJECT, 150 )
+		RFLG A 4 A_Chase("StepAwayCheck", "Missile", CHF_DONTMOVE)
+		RFLG A 0 A_Jump(128, "See", "AimingMomentCheck")
+		Goto See
+	StepAwayCheck:
+		RFLG A 3 A_ChangeVelocity(-2, 0, 0, CVF_RELATIVE)
+		RFLG B 3 A_ChangeVelocity(-1, 0, 0, CVF_RELATIVE)
+		TNT1 A 0 A_CheckLOF( "StepAway", CLOFF_IGNOREGHOST|CLOFF_JUMPOBJECT, 170 )
+		Goto StepAwayBlind
+	StepAway:
+		RFLG E 3 A_FaceTarget
+		TNT1 A 0 A_CheckLOF( "LineClearThenStepAway", CLOFF_IGNOREGHOST|CLOFF_JUMPOBJECT, 3000 )
+		RFLG A 3 A_ChangeVelocity(-2, 0, 0, CVF_RELATIVE)
+		RFLG B 3 A_ChangeVelocity(-2, 0, 0, CVF_RELATIVE)
+		RFLG C 3 A_ChangeVelocity(-2, 0, 0, CVF_RELATIVE)
+		RFLG D 3 A_ChangeVelocity(-2, 0, 0, CVF_RELATIVE)
+		TNT1 A 0 A_CheckLOF( "LineClear", CLOFF_IGNOREGHOST|CLOFF_JUMPOBJECT, 3000 )
+        RFLG A 3 A_ChangeVelocity(-2, 0, 0, CVF_RELATIVE)
+		RFLG B 3 A_ChangeVelocity(-2, 0, 0, CVF_RELATIVE)
+		RFLG C 3 A_ChangeVelocity(-2, 0, 0, CVF_RELATIVE)
+		RFLG D 3 A_ChangeVelocity(-2, 0, 0, CVF_RELATIVE)
+		RFLG E 10 A_Chase("StepAwayCheck", "Missile", CHF_DONTMOVE)
+		Goto See
+	LineClearThenStepAway:
+		RFLG E 3 A_FaceTarget
+		RFLG F 4 Bright A_CustomBulletAttack(10,4,1,random(3,6)* 3,"BulletPuff",0,CBAF_NORANDOM)
+        RFLG A 3 A_ChangeVelocity(-2, 0, 0, CVF_RELATIVE)
+		RFLG B 3 A_ChangeVelocity(-2, 0, 0, CVF_RELATIVE)
+		RFLG C 3 A_ChangeVelocity(-2, 0, 0, CVF_RELATIVE)
+		RFLG D 3 A_ChangeVelocity(-2, 0, 0, CVF_RELATIVE)
+		Goto See
+	StepAwayBlind:
+        RFLG A 3 A_ChangeVelocity(-2, 0, 0, CVF_RELATIVE)
+		RFLG B 3 A_ChangeVelocity(-2, 0, 0, CVF_RELATIVE)
+		RFLG C 3 A_ChangeVelocity(-2, 0, 0, CVF_RELATIVE)
+		RFLG D 3 A_ChangeVelocity(-2, 0, 0, CVF_RELATIVE)
+		RFLG A 3 A_ChangeVelocity(-1, 0, 0, CVF_RELATIVE)
+		RFLG B 3 A_ChangeVelocity(-1, 0, 0, CVF_RELATIVE)
+		RFLG C 3 A_ChangeVelocity(-1, 0, 0, CVF_RELATIVE)
+		RFLG D 3 A_ChangeVelocity(-1, 0, 0, CVF_RELATIVE)
+		RFLG E 10 A_Chase("StepAwayCheck", "Missile", CHF_DONTMOVE)
+		RFLG E 0 A_JumpIfCloser(220,"AimingMoment")
+		Goto See
+	AimingMomentCheck:
+		RFLG E 0 A_JumpIfCloser(220,"AimingMoment")
+		Goto See
+	AimingMoment:
+		RFLG A 0 A_SpawnItemEx("ZRifleHeadBox10", 8,0, 47,0,0,0,0,0)
+		RFLG E 4 A_FaceTarget
+        RFLG E 1 A_CheckLOF( "AimingMomentFire", CLOFF_IGNOREGHOST|CLOFF_JUMPOBJECT, 3000 )
+		RFLG E 1 A_JumpIfCloser(100,"ForwardAttack")
+		RFLG E 1 A_CheckLOF( "AimingMomentFire", CLOFF_IGNOREGHOST|CLOFF_JUMPOBJECT, 3000 )
+		RFLG E 1 A_JumpIfCloser(100,"ForwardAttack")
+		RFLG E 1 A_CheckLOF( "AimingMomentFire", CLOFF_IGNOREGHOST|CLOFF_JUMPOBJECT, 3000 )
+		RFLG E 1 A_JumpIfCloser(100,"ForwardAttack")
+		RFLG E 0 A_Jump(128,"AimingMoment")
+		Goto See
+	AimingMomentFire:
+		RFLG E 6 A_FaceTarget
+		RFLG F 4 Bright A_CustomBulletAttack(10,4,1,random(3,6)* 3,"BulletPuff",0,CBAF_NORANDOM)
+        RFLG E 2
+		Goto See
+	ForwardAttack:
+		RFLG A 3 A_ChangeVelocity(1, 0, 0, CVF_RELATIVE)
+		RFLG B 3 A_ChangeVelocity(1, 0, 0, CVF_RELATIVE)
+		RFLG C 3 A_ChangeVelocity(1, 0, 0, CVF_RELATIVE)
+		RFLG D 3 A_ChangeVelocity(1, 0, 0, CVF_RELATIVE)
+		TNT1 A 1 A_CheckLOF( "AimingMomentFire", CLOFF_IGNOREGHOST|CLOFF_JUMPOBJECT, 3000 )
+		TNT1 A 1 A_CheckLOF( "StepAwayCheck", CLOFF_IGNOREGHOST|CLOFF_JUMPOBJECT, 50 )
+		RFLG A 3 A_ChangeVelocity(1, 0, 0, CVF_RELATIVE)
+		RFLG B 3 A_ChangeVelocity(1, 0, 0, CVF_RELATIVE)
+		RFLG C 3 A_ChangeVelocity(1, 0, 0, CVF_RELATIVE)
+		RFLG D 3 A_ChangeVelocity(1, 0, 0, CVF_RELATIVE)
+		TNT1 A 1 A_CheckLOF( "AimingMomentFire", CLOFF_IGNOREGHOST|CLOFF_JUMPOBJECT, 3000 )
+		TNT1 A 1 A_CheckLOF( "StepAwayCheck", CLOFF_IGNOREGHOST|CLOFF_JUMPOBJECT, 50 )
+		RFLG A 3 A_ChangeVelocity(1, 0, 0, CVF_RELATIVE)
+		RFLG B 3 A_ChangeVelocity(1, 0, 0, CVF_RELATIVE)
+		RFLG C 3 A_ChangeVelocity(1, 0, 0, CVF_RELATIVE)
+		RFLG D 3 A_ChangeVelocity(1, 0, 0, CVF_RELATIVE)
+		TNT1 A 1 A_CheckLOF( "AimingMomentFire", CLOFF_IGNOREGHOST|CLOFF_JUMPOBJECT, 3000 )
+		TNT1 A 1 A_CheckLOF( "StepAwayCheck", CLOFF_IGNOREGHOST|CLOFF_JUMPOBJECT, 50 )
+		Goto See
+  Pain:
+    RFLG A 0 A_SpawnItemEx("ZRifleHeadBox6", 8,0, 47,0,0,0,0,0)
+	RFLG G 3
+    RFLG G 3 A_Pain
+    Goto See
+ // AI
+	Seek:
+		RFLG A 0 A_CheckProximity("HeadingforContact", "TargetAvail",3000,1,CPXF_CHECKSIGHT |CPXF_CLOSEST| CPXF_SETMASTER)
+		RFLG A 0 A_CheckProximity("HeadingforContact", "2ndLink",3000,1,CPXF_CHECKSIGHT |CPXF_FARTHEST| CPXF_SETMASTER)
+		RFLG A 0 A_CheckProximity("HeadingforContact", "3rdLink",3000,1,CPXF_CHECKSIGHT |CPXF_FARTHEST| CPXF_SETMASTER)
+		RFLG AA 3 A_Chase
+		RFLG A 0 A_CheckProximity("HeadingforContact", "TargetAvail",3000,1,CPXF_CHECKSIGHT |CPXF_CLOSEST| CPXF_SETMASTER)
+		RFLG A 0 A_CheckProximity("HeadingforContact", "2ndLink",3000,1,CPXF_CHECKSIGHT |CPXF_FARTHEST| CPXF_SETMASTER)
+		RFLG A 0 A_CheckProximity("HeadingforContact", "3rdLink",3000,1,CPXF_CHECKSIGHT |CPXF_FARTHEST| CPXF_SETMASTER)
+		RFLG BB 3 A_Chase
+		RFLG A 0 A_CheckProximity("HeadingforContact", "TargetAvail",3000,1,CPXF_CHECKSIGHT |CPXF_CLOSEST| CPXF_SETMASTER)
+		RFLG A 0 A_CheckProximity("HeadingforContact", "2ndLink",3000,1,CPXF_CHECKSIGHT |CPXF_FARTHEST| CPXF_SETMASTER)
+		RFLG A 0 A_CheckProximity("HeadingforContact", "3rdLink",3000,1,CPXF_CHECKSIGHT |CPXF_FARTHEST| CPXF_SETMASTER)
+		RFLG CC 3 A_Chase
+		RFLG A 0 A_CheckProximity("HeadingforContact", "TargetAvail",3000,1,CPXF_CHECKSIGHT |CPXF_CLOSEST| CPXF_SETMASTER)
+		RFLG A 0 A_CheckProximity("HeadingforContact", "2ndLink",3000,1,CPXF_CHECKSIGHT |CPXF_FARTHEST| CPXF_SETMASTER)
+		RFLG A 0 A_CheckProximity("HeadingforContact", "3rdLink",3000,1,CPXF_CHECKSIGHT |CPXF_FARTHEST| CPXF_SETMASTER)
+		RFLG DD 3 A_Chase
+		Loop
+	HeadingforContact:
+		RFLG A 0 A_FaceMaster
+		RFLG A 3 A_ChangeVelocity(1, 0, 0, CVF_RELATIVE)
+		RFLG B 3 A_ChangeVelocity(1, 0, 0, CVF_RELATIVE)
+		RFLG C 3 A_ChangeVelocity(1, 0, 0, CVF_RELATIVE)
+		RFLG D 3 A_ChangeVelocity(1, 0, 0, CVF_RELATIVE)
+		RFLG D 0 A_CheckLOF( "Missile", CLOFF_IGNOREGHOST|CLOFF_JUMPOBJECT, 3000 )
+		RFLG A 0 A_CheckProximity("HeadingforContact", "TargetAvail",3000,1,CPXF_CHECKSIGHT | CPXF_SETMASTER)
+		RFLG A 3 A_ChangeVelocity(1, 0, 0, CVF_RELATIVE)
+		RFLG B 3 A_ChangeVelocity(1, 0, 0, CVF_RELATIVE)
+		RFLG C 3 A_ChangeVelocity(1, 0, 0, CVF_RELATIVE)
+		RFLG D 3 A_ChangeVelocity(1, 0, 0, CVF_RELATIVE)
+		RFLG D 0 A_CheckLOF( "Missile", CLOFF_IGNOREGHOST|CLOFF_JUMPOBJECT, 3000 )
+		RFLG A 0 A_CheckProximity("HeadingforContact", "TargetAvail",3000,1,CPXF_CHECKSIGHT | CPXF_SETMASTER)
+		RFLG A 3 A_ChangeVelocity(1, 0, 0, CVF_RELATIVE)
+		RFLG B 3 A_ChangeVelocity(1, 0, 0, CVF_RELATIVE)
+		RFLG C 3 A_ChangeVelocity(1, 0, 0, CVF_RELATIVE)
+		RFLG D 3 A_ChangeVelocity(1, 0, 0, CVF_RELATIVE)
+		RFLG D 0 A_CheckLOF( "Missile", CLOFF_IGNOREGHOST|CLOFF_JUMPOBJECT, 3000 )
+		RFLG A 0 A_CheckProximity("HeadingforContact", "TargetAvail",3000,1,CPXF_CHECKSIGHT | CPXF_SETMASTER)
+		RFLG A 3 A_ChangeVelocity(1, 0, 0, CVF_RELATIVE)
+		RFLG B 3 A_ChangeVelocity(1, 0, 0, CVF_RELATIVE)
+		RFLG C 3 A_ChangeVelocity(1, 0, 0, CVF_RELATIVE)
+		RFLG D 3 A_ChangeVelocity(1, 0, 0, CVF_RELATIVE)
+		RFLG D 0 A_CheckLOF( "Missile", CLOFF_IGNOREGHOST|CLOFF_JUMPOBJECT, 3000 )
+		RFLG A 0 A_CheckProximity("HeadingforContact", "TargetAvail",3000,1,CPXF_CHECKSIGHT | CPXF_SETMASTER)
+		Goto Seek
+  Death:
+    RFLG H 5 A_SpawnItemEx("SalvagedArmorBonus", 8,0, 47,-1,0,3,0,0)
+    RFLG I 5 A_Scream
+    RFLG J 5 A_NoBlocking
+    RFLG K 5
+    RFLG L -1
+    Stop
+  XDeath:
+    RFLG M 5 A_SpawnItemEx("BurntHelmet", 8,0, 47,-1,0,3,0,0)
+    RFLG N 5 A_XScream
+    RFLG O 5 A_NoBlocking
+    RFLG PQRST 5
+    RFLG U -1
+    Stop
+  Death.Headshot:
+    RFLG H 5 A_SpawnItemEx("BurntHelmet", 8,0, 47,-1,0,3,0,0)
+    RFLG I 5 A_Scream
+    RFLG J 5 A_NoBlocking
+    RFLG K 5
+    RFLG L -1
+	Stop
+  Raise:
+    RFLG L 5
+    RFLG KJIH 5
+    Goto See
+  }
+}
+
+//-----------------
+//HEADBOXES -------
+//-----------------
+actor ZRifleHeadBox10
+{
+  +ismonster
+  -countkill
+  +shootable
+  +nogravity
+  +nodamagethrust
+  +noradiusdmg
+  PainChance 200
+  DamageFactor "Ice", 0.0
+  RenderStyle Add
+  Alpha 0.0
+  health 20
+  Radius 12
+  Height 10
+  scale 1.0
+  States
+  {
+  Spawn:
+    FRPP A 10
+    Stop
+  Pain:
+    FRPP A 0 A_DamageMaster(2,None, DMSS_INFLICTORDMGTYPE, None, None, AAPTR_DEFAULT)
+	Stop
+  Death:
+    FRPP A 0 A_KillMaster("Headshot")
+	FRPP A 1
+	Stop
+  Death.Lightning:
+    FRPP A 0 A_KillMaster("Headshot")
+    stop
+  }
+}
+
+actor ZRifleHeadBox6
+{
+  +ismonster
+  -countkill
+  +shootable
+  +nogravity
+  +nodamagethrust
+  +noradiusdmg
+  PainChance 200
+  DamageFactor "Ice", 0.0
+  RenderStyle Add
+  Alpha 0.0
+  health 20
+  Radius 12
+  Height 10
+  scale 1.0
+  States
+  {
+  Spawn:
+    FRPP A 6
+    Stop
+  Pain:
+    FRPP A 0 A_DamageMaster(2,None, DMSS_INFLICTORDMGTYPE, None, None, AAPTR_DEFAULT)
+	Stop
+  Death:
+    FRPP A 0 A_KillMaster("Headshot")
+	FRPP A 1
+	Stop
+  Death.Lightning:
+    FRPP A 0 A_KillMaster("Headshot")
+    stop
+  }
+}
+
+//-----------------
+//HEADs -----------
+//-----------------
+
+
+actor BurntHelmet
+{
+  -countkill
+  +shootable
+  +nodamagethrust
+  +noradiusdmg
+  Radius 20
+  Height 20
+  scale 1.0
+  Mass 20
+  States
+  {
+  Spawn:
+    RMBN A -1
+    Stop
+  }
+}

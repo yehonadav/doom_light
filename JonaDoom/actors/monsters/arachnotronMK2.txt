@@ -1,0 +1,50 @@
+actor ArachnotronMK2 : Arachnotron 30129
+{
+	//$Category JonaDoom_Monsters
+  Obituary "%o was toasted by an augmented arachnotron."
+  Health 1000
+  Radius 64
+  Height 64
+  Mass 600
+  Speed 14
+  Scale 1.2
+  PainChance 128
+  BloodColor "bf af 20"
+  SeeSound "baby/sight"
+  PainSound "baby/pain"
+  DeathSound "baby/death"
+  ActiveSound "baby/active"
+  States
+  {
+  Spawn:
+    BSP2 AB 10 A_Look
+    Loop
+  See:
+    BSP2 A 20
+    BSP2 A 3 A_BabyMetal
+    BSP2 ABBCC 3 A_Chase
+    BSP2 D 3 A_BabyMetal
+    BSP2 DEEFF 3 A_Chase
+    Goto See+1
+  Missile:
+    BSP2 A 20 Bright A_FaceTarget
+    BSP2 G 2 Bright A_CustomMissile("ArachnotronPlasma",19,-12)
+    BSP2 R 2 Bright
+    BSP2 H 2 Bright A_CustomMissile("ArachnotronPlasma",19,12)
+    BSP2 Q 2 Bright A_SpidRefire
+    Goto Missile+1
+  Pain:
+    BSP2 I 3
+    BSP2 I 3 A_Pain
+    Goto See+1
+  Death:
+    BSP2 J 20 A_Scream
+    BSP2 K 7 A_NoBlocking
+    BSP2 LMNO 7
+    BSP2 P -1
+    Stop
+  Raise:
+    BSP2 PONMLKJ 5
+    Goto See+1
+  }
+}

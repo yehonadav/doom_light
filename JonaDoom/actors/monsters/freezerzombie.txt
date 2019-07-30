@@ -1,0 +1,130 @@
+ACTOR FreezeRifleGuy 3206
+{
+	//$Category JonaDoom_Monsters
+    Health 60
+    Radius 20
+    Height 56
+    Speed 8
+    PainChance 170
+    MONSTER
+    +FLOORCLIP
+    SeeSound "grunt/sight"
+    PainSound "grunt/pain"
+    DeathSound "grunt/death"
+    ActiveSound "grunt/active"
+    Obituary "%o got frozen by a freezer zombie."
+    DropItem Freezer
+    MissileType ZombieFreezeBlast
+    States
+    {
+    Spawn:
+        FRPO AB 10 A_Look
+        Loop
+    See:
+        FRPO AABBCCDD 4 A_Chase
+        Loop
+    Missile:
+        FRPO E 10 A_FaceTarget
+        FRPO F 6 A_MissileAttack
+        FRPO E 1 A_SentinelRefire
+        Goto Missile+1
+    Pain:
+        FRPO G 3
+        FRPO G 3 A_Pain
+        Goto See
+    Death:
+        FRPO H 5
+        FRPO I 5 A_Scream
+        FRPO J 5 A_Fall
+        FRPO K 5
+        FRPO L -1
+        Stop
+    XDeath:
+        FRPO O 5
+        FRPO P 5 A_XScream
+        FRPO Q 5 A_Fall
+        FRPO RSTU 5
+        FRPO V -1
+        Stop
+    Burn:
+       BURN A 5 BRIGHT
+       BURN B 5 BRIGHT A_Pain
+       BURN C 5 BRIGHT
+       BURN D 5 BRIGHT
+       BURN E 5 BRIGHT A_Pain
+       BURN F 5 BRIGHT
+       BURN G 5 BRIGHT
+       BURN H 5 BRIGHT A_Pain
+       BURN I 5 BRIGHT
+       BURN J 5 BRIGHT
+       BURN K 5 BRIGHT
+       BURN L 5 BRIGHT
+       BURN M 5 BRIGHT
+       BURN N 5 BRIGHT A_Scream
+       BURN O 5 BRIGHT A_NoBlocking
+       BURN P 5 BRIGHT
+       BURN Q 5 BRIGHT
+       BURN R 5 BRIGHT
+       BURN S 5 BRIGHT
+       BURN T 5 BRIGHT
+       BURN U 5 BRIGHT
+       BRNT V -1
+       Stop
+    Raise:
+        FRPO KJIH 5
+        Goto See
+    }
+}
+
+actor ZombieFreezeBlast
+{
+  Game Doom
+  SpawnID 51
+  Radius 13
+  Height 8
+  Speed 25
+  Damage 6
+  Projectile
+  +RANDOMIZE
+  RenderStyle Add
+  Alpha 0.75
+  scale 0.9
+  SeeSound "weapons/iceshot"
+  DeathSound "weapons/icehit"
+  DamageType Ice
+  Decal FreezeBlastMelt
+  States
+  {
+  Spawn:
+    FBLS A 6 bright A_SpawnItem("FreezeBlastTrail")
+    loop
+  Death:
+    FBLS BCDE 4 bright
+    stop
+  }
+}
+
+actor FreezeBlastTrail
+{
+  Game Doom
+  SpawnID 51
+  Radius 13
+  Height 8
+  Speed 20
+  Damage 0
+  Projectile
+  +RANDOMIZE
+  RenderStyle Add
+  Alpha 0.75
+  SeeSound "weapons/iceshot"
+  DeathSound "weapons/icehit"
+  States
+  {
+  Spawn:
+    FRTR ABC 6 bright A_FadeOut(0.2)
+    loop
+  Death:
+    FRTR ABC 4 bright
+    stop
+  }
+}

@@ -81,54 +81,138 @@ def normalize(element):
     element = str(element)[2:-1]
     return element[:-2] if element.endswith('\\r') else element
 
+filechanges = {
+#     file_path: [lines...]
+}
 
-db = get_db()
-for dirpath, dirnames, filenames in os.walk(actor_dir):
-    for file_name in filenames:
-        if file_name.endswith(".wad"):
-            path = dirpath + os.sep + file_name
-            with open(path, 'rb') as actor_file:
-                data = actor_file.read()
-                lines = data.split(b'\n')
-                for line in lines:
-                    if len(line) > pattern_length:
-                        start_line = line[:pattern_length].upper()
-                        if start_line == line_pattern:
-                            elements = line.split(b' ')
 
-                            # no name
-                            if len(elements) == 1:
-                                pass
+def update_line(index, name, id, elements, file_path, is_id):
+    lines = filechanges[file_path]
+    line: bin = lines[index]
+    line0, line2 = line.split(elements[1], 1)
 
-                            # only name
-                            elif len(elements) == 2:
-                                name = normalize(elements[1])
+    line1 = bytes(name)
+    if elements[1].endswith("\\r"):
+        line1 += b'\\r'
 
-                                # validate actor has name and not id
-                                if is_id(name):
-                                    continue
+    if is_id:
+        line2, line3 = line2.split(elements[2], 1)
+    else:
+        line3 = line2
 
-                                name = assign_name(db, name)
-                                assign_id(db, name)
+    line2 = bytes(id)
+    if elements[2].endswith("\\r"):
+        line2 += b'\\r'
 
-                            # name and id are present
-                            else:
-                                name = normalize(elements[1])
-                                id = normalize(elements[2])
+    line_items = (line0, line1, line2, line3)
 
-                                if is_id(name):
-                                    continue
+    for i in range(len(line_items)):
+        while line_items[i].startswith(b' '):
+            line_items[i] = line_items[i][1:]
+        while line_items[i].endswith(b' '):
+            line_items[i] = line_items[i][:-1]
 
-                                if not is_id(id):
-                                    continue
+    line_items = [elements[0]] + line_items
 
-                                # check for name and id in database
-                                if name_in_db(db, name):
-                                    if id != db[name]:
-                                        name = assign_name(db, name)
-                                        if id in db.values():
-                                            assign_id(db, name)
-                                        else:
-                                            db[name] = id
-# TODO: update the source files!
-update_db(db)
+    if len(elements) > 3:
+        line_items.extend(elements)
+
+    lines[index] = b' '.join(line_items)
+
+
+def update_file(file_path):
+    lines = filechanges[file_path]
+    with open(file_path, 'wb') as file:
+        file.writelines(lines)
+
+
+def main():
+    db = get_db()
+    for dirpath, dirnames, filenames in os.walk(actor_dir):
+        for file_name in filenames:
+            if file_name.endswith(".wad"):
+                path = dirpath + os.sep + file_name
+
+                file_has_changes = False
+                with open(path, 'rb') as actor_file:
+                    data = actor_file.read()
+                    lines = data.split(b'\n')
+                    filechanges[path] = lines
+
+                    for index, line in enumerate(lines):
+                        if len(line) > pattern_length:
+                            start_line = line[:pattern_length].upper()
+                            if start_line == line_pattern:
+                                elements = line.split(b' ')
+
+                                # no name
+                                if len(elements) == 1:
+                                    pass
+
+                                # only name
+                                elif len(elements) == 2:
+                                    name = normalize(elements[1])
+
+                                    # validate actor has name and not id
+                                    if is_id(name):
+                                        continue
+
+                                    name = assign_name(db, name)
+                                    assign_id(db, name)
+
+                                    file_has_changes = True
+                                    update_line(
+                                        index,
+                                        name,
+                                        id=db[name],
+                                        elements=elements,
+                                        file_path=path,
+                                        is_id=False
+                                    )
+
+                                # name and id are present
+                                else:
+                                    name = normalize(elements[1])
+                                    id = normalize(elements[2])
+
+                                    if is_id(name):
+                                        continue
+
+                                    if not is_id(id):
+                                        continue
+
+                                    # check for name and id in database
+                                    if name_in_db(db, name):
+                                        if id != db[name]:
+                                            original_name = name
+                                            name = assign_name(db, name)
+
+                                            if original_name != name:
+                                                file_has_changes = True
+
+                                            if id in db.values():
+                                                original_id = db[name]
+                                                assign_id(db, name)
+
+                                                if original_id != db[name]:
+                                                    file_has_changes = True
+                                            else:
+                                                db[name] = id
+                                        update_line(
+                                            index,
+                                            name,
+                                            id=db[name],
+                                            elements=elements,
+                                            file_path=path,
+                                            is_id=True
+                                        )
+                if file_has_changes:
+                    update_file(path)
+                del filechanges[path]
+
+    # TODO: update the source files!
+    update_db(db)
+
+
+if __name__ == "__main__":
+    main()

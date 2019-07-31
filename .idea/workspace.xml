@@ -13,7 +13,7 @@
   </component>
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/doom_light$wad_extractor.coverage" NAME="wad_extractor Coverage Results" MODIFIED="1564553643678" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/scripts" />
-    <SUITE FILE_PATH="coverage/doom_light$manage_actors.coverage" NAME="manage_actors Coverage Results" MODIFIED="1564588652439" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/scripts" />
+    <SUITE FILE_PATH="coverage/doom_light$manage_actors.coverage" NAME="manage_actors Coverage Results" MODIFIED="1564591682104" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/scripts" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
@@ -43,8 +43,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/scripts/manage_actors.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="295">
-              <caret line="82" lean-forward="true" selection-start-line="82" selection-end-line="82" />
+            <state relative-caret-position="-840">
+              <caret line="81" column="48" selection-start-line="81" selection-start-column="45" selection-end-line="81" selection-end-column="48" />
             </state>
           </provider>
         </entry>
@@ -52,8 +52,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/scripts/actors.db">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="297">
-              <caret line="18" column="22" lean-forward="true" selection-start-line="18" selection-start-column="12" selection-end-line="18" selection-end-column="22" />
+            <state relative-caret-position="-6996">
+              <caret line="18" column="17" lean-forward="true" selection-start-line="18" selection-start-column="12" selection-end-line="18" selection-end-column="17" />
             </state>
           </provider>
         </entry>
@@ -204,7 +204,7 @@
       <updated>1564413157170</updated>
       <workItem from="1564413158371" duration="15384000" />
       <workItem from="1564551220342" duration="3340000" />
-      <workItem from="1564585307600" duration="3250000" />
+      <workItem from="1564585307600" duration="4982000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <created>1564413390424</created>
@@ -297,11 +297,18 @@
       <option name="project" value="LOCAL" />
       <updated>1564586042263</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="init">
+      <created>1564588719820</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1564588719820</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="21974000" />
+    <option name="totallyTimeSpent" value="23706000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
@@ -347,13 +354,8 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/scripts/manage_actors.py</url>
-          <line>126</line>
+          <line>125</line>
           <option name="timeStamp" value="4" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/scripts/manage_actors.py</url>
-          <line>81</line>
-          <option name="timeStamp" value="5" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -407,15 +409,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/scripts/manage_actors.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="295">
-          <caret line="82" lean-forward="true" selection-start-line="82" selection-end-line="82" />
+        <state relative-caret-position="-840">
+          <caret line="81" column="48" selection-start-line="81" selection-start-column="45" selection-end-line="81" selection-end-column="48" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scripts/actors.db">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="297">
-          <caret line="18" column="22" lean-forward="true" selection-start-line="18" selection-start-column="12" selection-end-line="18" selection-end-column="22" />
+        <state relative-caret-position="-6996">
+          <caret line="18" column="17" lean-forward="true" selection-start-line="18" selection-start-column="12" selection-end-line="18" selection-end-column="17" />
         </state>
       </provider>
     </entry>

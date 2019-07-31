@@ -77,9 +77,9 @@ def assign_id(db, name):
         print('no more available ids =(')
 
 
-def normalize_name(elements):
-    elements[1] = str(elements[1])[2:-1]
-    return elements[1][:-2] if elements[1].endswith('\\r') else elements[1]
+def normalize(element):
+    element = str(element)[2:-1]
+    return element[:-2] if element.endswith('\\r') else element
 
 
 db = get_db()
@@ -102,7 +102,7 @@ for dirpath, dirnames, filenames in os.walk(actor_dir):
 
                             # only name
                             elif len(elements) == 2:
-                                name = normalize_name(elements)
+                                name = normalize(elements[1])
 
                                 # validate actor has name and not id
                                 if is_id(name):
@@ -113,9 +113,8 @@ for dirpath, dirnames, filenames in os.walk(actor_dir):
 
                             # name and id are present
                             else:
-                                name = normalize_name(elements)
-
-                                id = elements[2]
+                                name = normalize(elements[1])
+                                id = normalize(elements[2])
 
                                 if is_id(name):
                                     continue

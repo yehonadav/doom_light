@@ -121,9 +121,10 @@ def update_line(index, name, id, elements, file_path, is_id):
 
 
 def update_file(file_path):
-    lines = filechanges[file_path]
-    with open(file_path, 'wb') as file:
-        file.writelines(lines)
+    pass
+    # lines = filechanges[file_path]
+    # with open(file_path, 'wb') as file:
+    #     file.writelines(lines)
 
 
 def main():

@@ -43,17 +43,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/scripts/manage_actors.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3146">
-              <caret line="211" lean-forward="true" selection-start-line="211" selection-end-line="211" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/.PyCharm2018.3/system/python_stubs/1292626274/builtins.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="219">
-              <caret line="2958" column="8" selection-start-line="2958" selection-start-column="8" selection-end-line="2958" selection-end-column="8" />
+            <state relative-caret-position="260">
+              <caret line="87" lean-forward="true" selection-start-line="87" selection-end-line="87" />
             </state>
           </provider>
         </entry>
@@ -204,7 +195,7 @@
       <updated>1564413157170</updated>
       <workItem from="1564413158371" duration="15384000" />
       <workItem from="1564551220342" duration="3340000" />
-      <workItem from="1564585307600" duration="8618000" />
+      <workItem from="1564585307600" duration="8863000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <created>1564413390424</created>
@@ -311,11 +302,18 @@
       <option name="project" value="LOCAL" />
       <updated>1564591768725</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="init">
+      <created>1564595369619</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1564595369619</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="27342000" />
+    <option name="totallyTimeSpent" value="27587000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
@@ -356,8 +354,13 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/scripts/manage_actors.py</url>
-          <line>184</line>
+          <line>185</line>
           <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/scripts/manage_actors.py</url>
+          <line>89</line>
+          <option name="timeStamp" value="6" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -425,8 +428,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/scripts/manage_actors.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3146">
-          <caret line="211" lean-forward="true" selection-start-line="211" selection-end-line="211" />
+        <state relative-caret-position="260">
+          <caret line="87" lean-forward="true" selection-start-line="87" selection-end-line="87" />
         </state>
       </provider>
     </entry>

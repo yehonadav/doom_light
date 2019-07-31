@@ -1,10 +1,10 @@
 # list all actor files
 # get all ids + actor names
-# change actor names + ids if duplicates
+# TODO: change actor names + ids if duplicates
 # save all actor names + ids in a DB
 import os
 
-actor_dir = os.path.dirname(__file__).replace('scripts', 'monsters')
+actor_dir = os.path.dirname(__file__).replace('scripts', 'things_to_import')
 line_pattern = b'ACTOR '
 pattern_length = len(line_pattern)
 id_range = (0, 50000)
